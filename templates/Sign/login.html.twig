@@ -1,0 +1,32 @@
+{% extends "layout.html.twig" %}
+
+{% block css %}
+    {{ parent() }}
+    <link href="{{ asset('css/content_login.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('js/login.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <div class="sign_form">
+    <form id="sign_form" action="{{ path('todo_login') }}" method="post">
+        <input id="username" class="sign_element" type="text" name="_username" value="{{ last_username }}"
+               placeholder="Email" />
+        <input id="password" class="sign_element" type="password" name="_password" placeholder="Password" />
+        <div class="sign_element" id="sign_form_submit">
+            <p>Log in</p>
+        </div>
+        {#
+            If you want to control the URL the user
+            is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+        #}
+    </form>
+    </div>
+{% endblock %}

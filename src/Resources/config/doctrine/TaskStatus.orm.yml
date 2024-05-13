@@ -1,0 +1,15 @@
+App\Entity\TaskStatus:
+    type: entity
+    table: task_status
+    id:
+        taskStatusCode:
+            type: string
+            nullable: false
+            length: 32
+            options:
+                fixed: false
+            id: true
+            column: task_status_code
+            generator:
+                strategy: IDENTITY
+    lifecycleCallbacks: {  }

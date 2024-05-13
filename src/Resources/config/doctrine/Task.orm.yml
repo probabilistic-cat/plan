@@ -1,0 +1,82 @@
+App\Entity\Task:
+    type: entity
+    table: task
+    indexes:
+        ix__task__user_id:
+            columns:
+                - user_id
+        ix__task_task_status__task_status_code:
+            columns:
+                - task_status_code
+    id:
+        taskId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: task_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        taskParentId:
+            type: integer
+            nullable: true
+            options:
+                unsigned: true
+            column: task_parent_id
+        taskName:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            column: task_name
+        taskDescription:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: task_description
+        taskEstimationTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                default: '0'
+            column: task_estimation_time
+        taskDueDate:
+            type: datetime
+            nullable: true
+            column: task_due_date
+        created:
+            type: datetime
+            nullable: false
+            options:
+                default: '1999-12-31 20:00:00'
+        modified:
+            type: datetime
+            nullable: true
+    manyToOne:
+        user:
+            targetEntity: User
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                user_id:
+                    referencedColumnName: user_id
+            orphanRemoval: false
+        taskStatusCode:
+            targetEntity: TaskStatus
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                task_status_code:
+                    referencedColumnName: task_status_code
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,49 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                property: userMail
+        #users_in_memory: { memory: null }
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: lazy
+            form_login:
+                login_path: todo_login
+                check_path: todo_login
+            provider: our_db_provider
+            logout:
+                path:   /logout
+                target: /
+            logout_on_user_change: true
+            #pattern:    ^/
+            #http_basic: ~
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+        #secured_area:
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+    # require ROLE_ADMIN for /admin*
+    # - { path: ^/admin, roles: ROLE_ADMIN }
+    # - { path: ^/profile, roles: ROLE_USER }
