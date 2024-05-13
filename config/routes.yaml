@@ -4,4 +4,3 @@
 todo:
     resource: "../src/Resources/config/routing.yml"
     prefix:   /
-
