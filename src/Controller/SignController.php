@@ -2,26 +2,26 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Entity\User;
+use App\Form\UserType;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Form\UserType;
-use App\Entity\User;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 //use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SignController extends Controller
+class SignController extends AbstractController
 {
     /**
      * Login action
      * @param Request $request
      * @return Response
      */
-    public function loginAction(Request $request)
+    public function loginAction(Request $request, AuthenticationUtils $authUtils)
     {
-        $authUtils = $this->get('security.authentication_utils');
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
 
@@ -36,7 +36,7 @@ class SignController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function signupAction(Request $request)
+    public function signupAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         // 1) build the form
         $user = new User();
@@ -47,7 +47,6 @@ class SignController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             // 3) Encode the password (you could also do this via Doctrine listener)
-            $passwordEncoder = $this->get('security.password_encoder');
             $password = $passwordEncoder->encodePassword($user, $user->getUserPlainPassword());
             $user->setUserPassword($password);
 
