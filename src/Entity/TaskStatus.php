@@ -7,14 +7,11 @@ namespace App\Entity;
  */
 class TaskStatus
 {
-    const TODO = 'todo';
-    const INPROGRESS = 'in_progress';
-    const COMPLETED = 'completed';
+    public const TODO = 'todo';
+    public const INPROGRESS = 'in_progress';
+    public const COMPLETED = 'completed';
 
-    /**
-     * @var string
-     */
-    private $taskStatusCode;
+    private string $taskStatusCode;
 
 
     /**
@@ -22,7 +19,7 @@ class TaskStatus
      *
      * @return string
      */
-    public function getTaskStatusCode()
+    public function getTaskStatusCode(): string
     {
         return $this->taskStatusCode;
     }

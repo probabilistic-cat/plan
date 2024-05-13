@@ -10,10 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
-    /**
-     * Index action
-     * @return Response
-     */
     public function indexAction(): Response
     {
         $tasksTodo = array();
@@ -23,11 +19,11 @@ class MainController extends AbstractController
         $tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
         foreach ($tasks as $task) {
             $taskStatusCode = $task->getTaskStatusCode()->getTaskStatusCode();
-            if ($taskStatusCode == TaskStatus::TODO) {
+            if ($taskStatusCode === TaskStatus::TODO) {
                 $tasksTodo[] = $task;
-            } else if ($taskStatusCode == TaskStatus::INPROGRESS) {
+            } else if ($taskStatusCode === TaskStatus::INPROGRESS) {
                 $tasksInprogress[] = $task;
-            } else if ($taskStatusCode == TaskStatus::COMPLETED) {
+            } else if ($taskStatusCode === TaskStatus::COMPLETED) {
                 $tasksCompleted[] = $task;
             }
         }

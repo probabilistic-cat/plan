@@ -15,12 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SignController extends AbstractController
 {
-    /**
-     * Login action
-     * @param Request $request
-     * @return Response
-     */
-    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    public function loginAction(Request $request, AuthenticationUtils $authUtils): Response
     {
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
@@ -31,12 +26,7 @@ class SignController extends AbstractController
         ));
     }
 
-    /**
-     * Signup action
-     * @param Request $request
-     * @return Response
-     */
-    public function signupAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function signupAction(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         // 1) build the form
         $user = new User();
