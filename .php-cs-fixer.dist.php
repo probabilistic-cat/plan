@@ -11,6 +11,9 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        'list_syntax' => ['syntax' => 'short'],
+        'phpdoc_summary' => false,
+        'yoda_style' => false,
     ])
     ->setFinder($finder)
 ;

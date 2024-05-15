@@ -13,11 +13,8 @@ class TaskStatus
 
     private string $taskStatusCode;
 
-
     /**
      * Get taskStatusCode
-     *
-     * @return string
      */
     public function getTaskStatusCode(): string
     {

@@ -8,7 +8,7 @@ namespace App\Entity;
 class User implements \Symfony\Component\Security\Core\User\UserInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     private $userId;
 
@@ -33,7 +33,7 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
     private $userMail;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $userActive = 0;
 
@@ -58,7 +58,7 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
     /**
      * Get userId
      *
-     * @return integer
+     * @return int
      */
     public function getUserId()
     {
@@ -69,10 +69,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set userName
      *
      * @param string $userName
-     *
-     * @return User
      */
-    public function setUserName($userName)
+    public function setUserName($userName): self
     {
         $this->userName = $userName;
 
@@ -93,10 +91,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set userPassword
      *
      * @param string $userPassword
-     *
-     * @return User
      */
-    public function setUserPassword($userPassword)
+    public function setUserPassword($userPassword): self
     {
         $this->userPassword = $userPassword;
 
@@ -117,10 +113,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set userPlainPassword
      *
      * @param string $userPlainPassword
-     *
-     * @return User
      */
-    public function setUserPlainPassword($userPlainPassword)
+    public function setUserPlainPassword($userPlainPassword): self
     {
         $this->userPlainPassword = $userPlainPassword;
 
@@ -141,10 +135,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set userMail
      *
      * @param string $userMail
-     *
-     * @return User
      */
-    public function setUserMail($userMail)
+    public function setUserMail($userMail): self
     {
         $this->userMail = $userMail;
 
@@ -164,11 +156,9 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
     /**
      * Set userActive
      *
-     * @param boolean $userActive
-     *
-     * @return User
+     * @param bool $userActive
      */
-    public function setUserActive($userActive)
+    public function setUserActive($userActive): self
     {
         $this->userActive = $userActive;
 
@@ -178,7 +168,7 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
     /**
      * Get userActive
      *
-     * @return boolean
+     * @return bool
      */
     public function getUserActive()
     {
@@ -189,10 +179,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set created
      *
      * @param \DateTime $created
-     *
-     * @return User
      */
-    public function setCreated($created)
+    public function setCreated($created): self
     {
         $this->created = $created;
 
@@ -213,10 +201,8 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
      * Set modified
      *
      * @param \DateTime $modified
-     *
-     * @return User
      */
-    public function setModified($modified)
+    public function setModified($modified): self
     {
         $this->modified = $modified;
 
@@ -233,36 +219,29 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
         return $this->modified;
     }
 
-
-
     /**
      * Serialize
-     * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
-        return serialize(array(
+        return serialize([
             $this->userId,
             $this->userName,
             $this->userPassword,
-        ));
+        ]);
     }
 
     /**
      * Unserialize
-     * @param mixed $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        list (
-            $this->userId,
-            $this->userName,
-            $this->userPassword,
-        ) = unserialize($serialized);
+        [$this->userId, $this->userName, $this->userPassword] = unserialize($serialized);
     }
 
     /**
      * Alias for getUserPassword
+     *
      * @return string
      */
     public function getPassword()
@@ -280,15 +259,18 @@ class User implements \Symfony\Component\Security\Core\User\UserInterface
 
     /**
      * Get roles
+     *
      * @return array
      */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return ['ROLE_USER'];
     }
 
     /**
      * Erase credentials
      */
-    public function eraseCredentials() {}
+    public function eraseCredentials()
+    {
+    }
 }

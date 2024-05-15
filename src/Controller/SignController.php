@@ -4,29 +4,29 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+// use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SignController extends AbstractController
 {
-    public function loginAction(Request $request, AuthenticationUtils $authUtils): Response
+    public function login(AuthenticationUtils $authUtils): Response
     {
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
 
-        return $this->render('Sign/login.html.twig', array(
+        return $this->render('Sign/login.html.twig', [
             'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
+            'error' => $error,
+        ]);
     }
 
-    public function signupAction(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function signup(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         // 1) build the form
         $user = new User();
@@ -35,7 +35,6 @@ class SignController extends AbstractController
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             // 3) Encode the password (you could also do this via Doctrine listener)
             $password = $passwordEncoder->encodePassword($user, $user->getUserPlainPassword());
             $user->setUserPassword($password);
@@ -51,8 +50,8 @@ class SignController extends AbstractController
             return $this->redirectToRoute('todo_homepage');
         }
 
-        return $this->render('Sign/signup.html.twig', array(
-            'form' => $form->createView()
-        ));
+        return $this->render('Sign/signup.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

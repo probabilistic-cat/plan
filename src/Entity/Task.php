@@ -8,12 +8,12 @@ namespace App\Entity;
 class Task
 {
     /**
-     * @var integer
+     * @var int
      */
     private $taskId;
 
     /**
-     * @var integer
+     * @var int
      */
     private $taskParentId;
 
@@ -28,7 +28,7 @@ class Task
     private $taskDescription;
 
     /**
-     * @var integer
+     * @var int
      */
     private $taskEstimationTime = '0';
 
@@ -48,20 +48,19 @@ class Task
     private $modified;
 
     /**
-     * @var \App\Entity\User
+     * @var User
      */
     private $user;
 
     /**
-     * @var \App\Entity\TaskStatus
+     * @var TaskStatus
      */
     private $taskStatusCode;
-
 
     /**
      * Get taskId
      *
-     * @return integer
+     * @return int
      */
     public function getTaskId()
     {
@@ -71,11 +70,9 @@ class Task
     /**
      * Set taskParentId
      *
-     * @param integer $taskParentId
-     *
-     * @return Task
+     * @param int $taskParentId
      */
-    public function setTaskParentId($taskParentId)
+    public function setTaskParentId($taskParentId): self
     {
         $this->taskParentId = $taskParentId;
 
@@ -85,7 +82,7 @@ class Task
     /**
      * Get taskParentId
      *
-     * @return integer
+     * @return int
      */
     public function getTaskParentId()
     {
@@ -96,10 +93,8 @@ class Task
      * Set taskName
      *
      * @param string $taskName
-     *
-     * @return Task
      */
-    public function setTaskName($taskName)
+    public function setTaskName($taskName): self
     {
         $this->taskName = $taskName;
 
@@ -120,10 +115,8 @@ class Task
      * Set taskDescription
      *
      * @param string $taskDescription
-     *
-     * @return Task
      */
-    public function setTaskDescription($taskDescription)
+    public function setTaskDescription($taskDescription): self
     {
         $this->taskDescription = $taskDescription;
 
@@ -143,11 +136,9 @@ class Task
     /**
      * Set taskEstimationTime
      *
-     * @param integer $taskEstimationTime
-     *
-     * @return Task
+     * @param int $taskEstimationTime
      */
-    public function setTaskEstimationTime($taskEstimationTime)
+    public function setTaskEstimationTime($taskEstimationTime): self
     {
         $this->taskEstimationTime = $taskEstimationTime;
 
@@ -157,7 +148,7 @@ class Task
     /**
      * Get taskEstimationTime
      *
-     * @return integer
+     * @return int
      */
     public function getTaskEstimationTime()
     {
@@ -168,10 +159,8 @@ class Task
      * Set taskDueDate
      *
      * @param \DateTime $taskDueDate
-     *
-     * @return Task
      */
-    public function setTaskDueDate($taskDueDate)
+    public function setTaskDueDate($taskDueDate): self
     {
         $this->taskDueDate = $taskDueDate;
 
@@ -192,10 +181,8 @@ class Task
      * Set created
      *
      * @param \DateTime $created
-     *
-     * @return Task
      */
-    public function setCreated($created)
+    public function setCreated($created): self
     {
         $this->created = $created;
 
@@ -216,10 +203,8 @@ class Task
      * Set modified
      *
      * @param \DateTime $modified
-     *
-     * @return Task
      */
-    public function setModified($modified)
+    public function setModified($modified): self
     {
         $this->modified = $modified;
 
@@ -238,12 +223,8 @@ class Task
 
     /**
      * Set user
-     *
-     * @param \App\Entity\User $user
-     *
-     * @return Task
      */
-    public function setUser(\App\Entity\User $user = null)
+    public function setUser(?User $user = null): self
     {
         $this->user = $user;
 
@@ -253,7 +234,7 @@ class Task
     /**
      * Get user
      *
-     * @return \App\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -262,12 +243,8 @@ class Task
 
     /**
      * Set taskStatusCode
-     *
-     * @param \App\Entity\TaskStatus $taskStatusCode
-     *
-     * @return Task
      */
-    public function setTaskStatusCode(\App\Entity\TaskStatus $taskStatusCode = null)
+    public function setTaskStatusCode(?TaskStatus $taskStatusCode = null): self
     {
         $this->taskStatusCode = $taskStatusCode;
 
@@ -277,7 +254,7 @@ class Task
     /**
      * Get taskStatusCode
      *
-     * @return \App\Entity\TaskStatus
+     * @return TaskStatus
      */
     public function getTaskStatusCode()
     {
