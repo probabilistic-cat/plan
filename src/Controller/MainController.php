@@ -17,7 +17,7 @@ class MainController extends AbstractController
 
         $tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
         foreach ($tasks as $task) {
-            $taskStatusCode = $task->getTaskStatusCode()->getTaskStatusCode();
+            $taskStatusCode = $task->getTaskStatus()->getTaskStatusCode();
             if ($taskStatusCode === TaskStatus::TODO) {
                 $tasksTodo[] = $task;
             } elseif ($taskStatusCode === TaskStatus::INPROGRESS) {

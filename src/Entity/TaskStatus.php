@@ -13,6 +13,14 @@ class TaskStatus
 
     private string $taskStatusCode;
 
+    public function __construct(string $taskStatusCode)
+    {
+        if (!in_array($taskStatusCode, [self::TODO, self::INPROGRESS, self::COMPLETED], true)) {
+            throw new \InvalidArgumentException('Wrong task status code.');
+        }
+        $this->taskStatusCode = $taskStatusCode;
+    }
+
     /**
      * Get taskStatusCode
      */

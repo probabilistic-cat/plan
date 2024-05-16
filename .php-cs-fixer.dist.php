@@ -13,6 +13,7 @@ return (new PhpCsFixer\Config())
         '@Symfony' => true,
         'list_syntax' => ['syntax' => 'short'],
         'phpdoc_summary' => false,
+        'statement_indentation' => false,
         'yoda_style' => false,
     ])
     ->setFinder($finder)

@@ -20,7 +20,7 @@ return RectorConfig::configure()
         naming: false,
         instanceOf: true,
         earlyReturn: true,
-        strictBooleans: true
+        strictBooleans: true,
     )
     ->withSets([
         SymfonySetList::SYMFONY_54,
@@ -28,6 +28,7 @@ return RectorConfig::configure()
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
     ->withSkip([
+        Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRector::class,
         __DIR__.'/src/Entity/*',
     ])
 ;

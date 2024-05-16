@@ -44,7 +44,7 @@ App\Entity\Task:
             nullable: false
             options:
                 unsigned: false
-                default: '0'
+                default: 0
             column: task_estimation_time
         taskDueDate:
             type: datetime
@@ -69,7 +69,7 @@ App\Entity\Task:
                 user_id:
                     referencedColumnName: user_id
             orphanRemoval: false
-        taskStatusCode:
+        taskStatus:
             targetEntity: TaskStatus
             cascade: {  }
             fetch: LAZY

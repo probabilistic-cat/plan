@@ -28,7 +28,7 @@ security:
                 check_path: todo_login
             provider: our_db_provider
             logout:
-                path: /logout
+                path: /logout/
                 target: /
             #pattern:    ^/
             #http_basic: ~

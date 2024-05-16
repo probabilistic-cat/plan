@@ -30,7 +30,7 @@ class Task
     /**
      * @var int
      */
-    private $taskEstimationTime = '0';
+    private $taskEstimationTime = 0;
 
     /**
      * @var \DateTime
@@ -55,7 +55,12 @@ class Task
     /**
      * @var TaskStatus
      */
-    private $taskStatusCode;
+    private $taskStatus;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime($this->created);
+    }
 
     /**
      * Get taskId
@@ -224,7 +229,7 @@ class Task
     /**
      * Set user
      */
-    public function setUser(?User $user = null): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -242,22 +247,22 @@ class Task
     }
 
     /**
-     * Set taskStatusCode
+     * Set taskStatus
      */
-    public function setTaskStatusCode(?TaskStatus $taskStatusCode = null): self
+    public function setTaskStatus(TaskStatus $taskStatus): self
     {
-        $this->taskStatusCode = $taskStatusCode;
+        $this->taskStatus = $taskStatus;
 
         return $this;
     }
 
     /**
-     * Get taskStatusCode
+     * Get taskStatus
      *
      * @return TaskStatus
      */
-    public function getTaskStatusCode()
+    public function getTaskStatus()
     {
-        return $this->taskStatusCode;
+        return $this->taskStatus;
     }
 }
