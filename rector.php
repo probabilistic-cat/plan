@@ -10,11 +10,24 @@ return RectorConfig::configure()
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
-    ->withPhpSets(false, false, false, false, true)
-    ->withPreparedSets(true, true, false, true, true, false, true, true, true)
+    ->withPhpSets(php81: true)
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        codingStyle: false,
+        typeDeclarations: true,
+        privatization: true,
+        naming: false,
+        instanceOf: true,
+        earlyReturn: true,
+        strictBooleans: true
+    )
     ->withSets([
         SymfonySetList::SYMFONY_54,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+    ])
+    ->withSkip([
+        __DIR__.'/src/Entity/*',
     ])
 ;
