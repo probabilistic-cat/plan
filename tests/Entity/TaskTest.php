@@ -43,11 +43,11 @@ class TaskTest extends KernelTestCase
 
     private function createTestTask(EntityManagerInterface $em): int
     {
-        $task = new Task();
-        $task->setUser(TestEntityHelper::getTestUser($em, $this->userId));
+        $user = TestEntityHelper::getTestUser($em, $this->userId);
+        $taskStatus = self::getTaskStatus($em, TaskStatus::TODO);
+        $task = new Task($user, $taskStatus);
         $task->setTaskName(self::TASK_NAME);
         $task->setTaskDescription(self::TASK_DESCRIPTION);
-        $task->setTaskStatus(self::getTaskStatus($em, TaskStatus::TODO));
         $em->persist($task);
         $em->flush();
 

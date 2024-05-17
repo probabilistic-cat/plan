@@ -34,9 +34,4 @@ class UserTest extends KernelTestCase
         $this->assertEquals(self::USER_NAME, $user->getUserName());
         $this->assertEquals(self::USER_ACTIVE, $user->getUserActive());
     }
-
-//    public function testTmp(): void
-//    {
-//        $this->assertNull(null);
-//    }
 }

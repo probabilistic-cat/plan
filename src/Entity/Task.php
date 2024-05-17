@@ -2,266 +2,100 @@
 
 namespace App\Entity;
 
-/**
- * Task
- */
 class Task
 {
-    /**
-     * @var int
-     */
-    private $taskId;
+    private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
-    /**
-     * @var int
-     */
-    private $taskParentId;
+    private int $taskId;
+    private ?int $taskParentId = null;
+    private string $taskName;
+    private ?string $taskDescription = null;
+    private int $taskEstimationTime = 0;
+    private ?\DateTime $taskDueDate = null;
+    private \DateTime $created;
+    private ?\DateTime $modified = null;
 
-    /**
-     * @var string
-     */
-    private $taskName;
-
-    /**
-     * @var string
-     */
-    private $taskDescription;
-
-    /**
-     * @var int
-     */
-    private $taskEstimationTime = 0;
-
-    /**
-     * @var \DateTime
-     */
-    private $taskDueDate;
-
-    /**
-     * @var \DateTime
-     */
-    private $created = '1999-12-31 21:00:00';
-
-    /**
-     * @var \DateTime
-     */
-    private $modified;
-
-    /**
-     * @var User
-     */
-    private $user;
-
-    /**
-     * @var TaskStatus
-     */
-    private $taskStatus;
-
-    public function __construct()
+    public function __construct(private User $user, private TaskStatus $taskStatus)
     {
-        $this->created = new \DateTime($this->created);
+        $this->created = new \DateTime(self::CREATED_DEFAULT);
     }
 
-    /**
-     * Get taskId
-     *
-     * @return int
-     */
-    public function getTaskId()
+    public function getTaskId(): int
     {
         return $this->taskId;
     }
 
-    /**
-     * Set taskParentId
-     *
-     * @param int $taskParentId
-     */
-    public function setTaskParentId($taskParentId): self
+    public function setTaskParentId(int $taskParentId): void
     {
         $this->taskParentId = $taskParentId;
-
-        return $this;
     }
 
-    /**
-     * Get taskParentId
-     *
-     * @return int
-     */
-    public function getTaskParentId()
+    public function getTaskParentId(): ?int
     {
         return $this->taskParentId;
     }
 
-    /**
-     * Set taskName
-     *
-     * @param string $taskName
-     */
-    public function setTaskName($taskName): self
+    public function setTaskName(string $taskName): void
     {
         $this->taskName = $taskName;
-
-        return $this;
     }
 
-    /**
-     * Get taskName
-     *
-     * @return string
-     */
-    public function getTaskName()
+    public function getTaskName(): string
     {
         return $this->taskName;
     }
 
-    /**
-     * Set taskDescription
-     *
-     * @param string $taskDescription
-     */
-    public function setTaskDescription($taskDescription): self
+    public function setTaskDescription(string $taskDescription): void
     {
         $this->taskDescription = $taskDescription;
-
-        return $this;
     }
 
-    /**
-     * Get taskDescription
-     *
-     * @return string
-     */
-    public function getTaskDescription()
+    public function getTaskDescription(): ?string
     {
         return $this->taskDescription;
     }
 
-    /**
-     * Set taskEstimationTime
-     *
-     * @param int $taskEstimationTime
-     */
-    public function setTaskEstimationTime($taskEstimationTime): self
+    public function setTaskEstimationTime(int $taskEstimationTime): void
     {
         $this->taskEstimationTime = $taskEstimationTime;
-
-        return $this;
     }
 
-    /**
-     * Get taskEstimationTime
-     *
-     * @return int
-     */
-    public function getTaskEstimationTime()
+    public function getTaskEstimationTime(): int
     {
         return $this->taskEstimationTime;
     }
 
-    /**
-     * Set taskDueDate
-     *
-     * @param \DateTime $taskDueDate
-     */
-    public function setTaskDueDate($taskDueDate): self
+    public function setTaskDueDate(\DateTime $taskDueDate): void
     {
         $this->taskDueDate = $taskDueDate;
-
-        return $this;
     }
 
-    /**
-     * Get taskDueDate
-     *
-     * @return \DateTime
-     */
-    public function getTaskDueDate()
+    public function getTaskDueDate(): ?\DateTime
     {
         return $this->taskDueDate;
     }
 
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     */
-    public function setCreated($created): self
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
 
-    /**
-     * Set modified
-     *
-     * @param \DateTime $modified
-     */
-    public function setModified($modified): self
-    {
-        $this->modified = $modified;
-
-        return $this;
-    }
-
-    /**
-     * Get modified
-     *
-     * @return \DateTime
-     */
-    public function getModified()
+    public function getModified(): ?\DateTime
     {
         return $this->modified;
     }
 
-    /**
-     * Set user
-     */
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    /**
-     * Set taskStatus
-     */
-    public function setTaskStatus(TaskStatus $taskStatus): self
+    public function setTaskStatus(TaskStatus $taskStatus): void
     {
         $this->taskStatus = $taskStatus;
-
-        return $this;
     }
 
-    /**
-     * Get taskStatus
-     *
-     * @return TaskStatus
-     */
-    public function getTaskStatus()
+    public function getTaskStatus(): TaskStatus
     {
         return $this->taskStatus;
     }

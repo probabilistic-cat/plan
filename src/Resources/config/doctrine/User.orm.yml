@@ -41,7 +41,7 @@ App\Entity\User:
             type: boolean
             nullable: false
             options:
-                default: '0'
+                default: 0
             column: user_active
         created:
             type: datetime

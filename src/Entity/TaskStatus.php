@@ -11,7 +11,7 @@ class TaskStatus
     public const INPROGRESS = 'in_progress';
     public const COMPLETED = 'completed';
 
-    private string $taskStatusCode;
+    private readonly string $taskStatusCode;
 
     public function __construct(string $taskStatusCode)
     {
@@ -21,9 +21,6 @@ class TaskStatus
         $this->taskStatusCode = $taskStatusCode;
     }
 
-    /**
-     * Get taskStatusCode
-     */
     public function getTaskStatusCode(): string
     {
         return $this->taskStatusCode;
