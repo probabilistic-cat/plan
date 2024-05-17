@@ -1,6 +1,8 @@
-#index:
-#    path: /
-#    controller: App\Controller\MainController::index
 todo:
     resource: "../src/Resources/config/routing.yml"
     prefix:   /
+#controllers:
+#    resource:
+#        path: ../src/Controller/
+#        namespace: App\Controller
+#    type: attribute

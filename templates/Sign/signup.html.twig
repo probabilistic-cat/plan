@@ -11,10 +11,7 @@
 
 {% block content %}
     {{ form_start(form) }}
-        {{ form_row(form.userName) }}
-        {{ form_row(form.userMail) }}
-        {{ form_row(form.userPlainPassword.first) }}
-        {{ form_row(form.userPlainPassword.second) }}
+        {{ form_widget(form) }}
 
         <button type="submit">Sign up</button>
     {{ form_end(form) }}

@@ -132,11 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getUserPassword();
     }
 
-    public function getSalt(): ?string
-    {
-        return null;
-    }
-
     public function getRoles(): array
     {
         return ['ROLE_USER'];
