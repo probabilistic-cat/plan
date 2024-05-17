@@ -13,29 +13,29 @@ class Task
     private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
     #[ORM\Id]
-    #[ORM\Column(name: 'task_id', type: 'integer', nullable: false, options: ['unsigned' => true])]
+    #[ORM\Column(options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private int $taskId;
 
-    #[ORM\Column(name: 'task_parent_id', type: 'integer', nullable: true, options: ['unsigned' => true])]
+    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
     private ?int $taskParentId = null;
 
-    #[ORM\Column(name: 'task_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column()]
     private string $taskName;
 
-    #[ORM\Column(name: 'task_description', type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private ?string $taskDescription = null;
 
-    #[ORM\Column(name: 'task_estimation_time', type: 'integer', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(options: ['default' => 0])]
     private int $taskEstimationTime = 0;
 
-    #[ORM\Column(name: 'task_due_date', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?\DateTime $taskDueDate = null;
 
-    #[ORM\Column(name: 'created', type: 'datetime', nullable: false, options: ['default' => '1999-12-31 20:00:00'])]
+    #[ORM\Column(options: ['default' => '1999-12-31 20:00:00'])]
     private \DateTime $created;
 
-    #[ORM\Column(name: 'modified', type: 'datetime', nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?\DateTime $modified = null;
 
     #[ORM\ManyToOne()]

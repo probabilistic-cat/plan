@@ -34,7 +34,9 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRector::class,
-        Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class,
+        Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class => [
+            __DIR__.'/src/Entity',
+        ],
         Rector\Php81\Rector\Property\ReadOnlyPropertyRector::class,
     ])
 ;

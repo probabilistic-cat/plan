@@ -13,28 +13,28 @@ class User implements UserInterface
     private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
     #[ORM\Id]
-    #[ORM\Column(name: 'user_id', type: 'integer', nullable: false, options: ['unsigned' => true])]
+    #[ORM\Column(options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private int $userId;
 
-    #[ORM\Column(name: 'user_name', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(length: 100)]
     private string $userName;
 
-    #[ORM\Column(name: 'user_password', type: 'string', length: 60, nullable: false, options: ['fixed' => true])]
+    #[ORM\Column(length: 60, options: ['fixed' => true])]
     private string $userPassword;
 
     private string $userPlainPassword;
 
-    #[ORM\Column(name: 'user_mail', type: 'string', length: 100, nullable: false)]
+    #[ORM\Column(length: 100)]
     private string $userMail;
 
-    #[ORM\Column(name: 'user_active', type: 'boolean', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(options: ['default' => false])]
     private bool $userActive = false;
 
-    #[ORM\Column(name: 'created', type: 'datetime', nullable: false, options: ['default' => '1999-12-31 21:00:00'])]
+    #[ORM\Column(options: ['default' => '1999-12-31 21:00:00'])]
     private \DateTime $created;
 
-    #[ORM\Column(name: 'modified', type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[ORM\Column(nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTime $modified = null;
 
     public function __construct()

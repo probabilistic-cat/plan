@@ -13,7 +13,7 @@ class TaskStatus
     public const COMPLETED = 'completed';
 
     #[ORM\Id]
-    #[ORM\Column(name: 'task_status_code', type: 'string', length: 32, nullable: false)]
+    #[ORM\Column(length: 32)]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private readonly string $taskStatusCode;
 
