@@ -4,61 +4,46 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="task", indexes={@ORM\Index(name="ix__task_task_status__task_status_code", columns={"task_status_code"}), @ORM\Index(name="ix__task__user_id", columns={"user_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'task')]
+#[ORM\Index(name: 'ix__task__user_id', columns: ['user_id'])]
+#[ORM\Index(name: 'ix__task_task_status__task_status_code', columns: ['task_status_code'])]
 class Task
 {
     private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
-    /**
-     * @ORM\Column(name="task_id", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: 'task_id', type: 'integer', nullable: false, options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private int $taskId;
-    /**
-     * @ORM\Column(name="task_parent_id", type="integer", nullable=true, options={"unsigned"=true})
-     */
+
+    #[ORM\Column(name: 'task_parent_id', type: 'integer', nullable: true, options: ['unsigned' => true])]
     private ?int $taskParentId = null;
-    /**
-     * @ORM\Column(name="task_name", type="string", length=255, nullable=false)
-     */
+
+    #[ORM\Column(name: 'task_name', type: 'string', length: 255, nullable: false)]
     private string $taskName;
-    /**
-     * @ORM\Column(name="task_description", type="text", length=65535, nullable=true)
-     */
+
+    #[ORM\Column(name: 'task_description', type: 'text', length: 65535, nullable: true)]
     private ?string $taskDescription = null;
-    /**
-     * @ORM\Column(name="task_estimation_time", type="integer", nullable=false)
-     */
+
+    #[ORM\Column(name: 'task_estimation_time', type: 'integer', nullable: false, options: ['default' => 0])]
     private int $taskEstimationTime = 0;
-    /**
-     * @ORM\Column(name="task_due_date", type="datetime", nullable=true)
-     */
+
+    #[ORM\Column(name: 'task_due_date', type: 'datetime', nullable: true)]
     private ?\DateTime $taskDueDate = null;
-    /**
-     * @ORM\Column(name="created", type="datetime", nullable=false, options={"default"="1999-12-31 20:00:00"})
-     */
+
+    #[ORM\Column(name: 'created', type: 'datetime', nullable: false, options: ['default' => '1999-12-31 20:00:00'])]
     private \DateTime $created;
-    /**
-     * @ORM\Column(name="modified", type="datetime", nullable=true)
-     */
+
+    #[ORM\Column(name: 'modified', type: 'datetime', nullable: true)]
     private ?\DateTime $modified = null;
-    /**
-     * @ORM\ManyToOne(targetEntity="TaskStatus")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="task_status_code", referencedColumnName="task_status_code")
-     * })
-     */
+
+    #[ORM\ManyToOne()]
+    #[ORM\JoinColumn(name: 'task_status_code', referencedColumnName: 'task_status_code', nullable: false, onDelete: 'NO ACTION', options: ['default' => 'todo'])]
     private TaskStatus $taskStatus;
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
-     * })
-     */
+
+    #[ORM\ManyToOne()]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'NO ACTION')]
     private User $user;
 
     public function __construct(User $user, TaskStatus $taskStatus)
