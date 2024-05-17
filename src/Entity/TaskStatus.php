@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * TaskStatus
+ * @ORM\Table(name="task_status")
+ * @ORM\Entity
  */
 class TaskStatus
 {
@@ -11,6 +14,11 @@ class TaskStatus
     public const INPROGRESS = 'in_progress';
     public const COMPLETED = 'completed';
 
+    /**
+     * @ORM\Column(name="task_status_code", type="string", length=32, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     private readonly string $taskStatusCode;
 
     public function __construct(string $taskStatusCode)

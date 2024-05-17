@@ -2,19 +2,47 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="iu__user__user_mail", columns={"user_mail"})})
+ * @ORM\Entity
+ */
 class User implements UserInterface
 {
     private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
+    /**
+     * @ORM\Column(name="user_id", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
     private int $userId;
+    /**
+     * @ORM\Column(name="user_name", type="string", length=100, nullable=false)
+     */
     private string $userName;
+    /**
+     * @ORM\Column(name="user_password", type="string", length=60, nullable=false, options={"fixed"=true})
+     */
     private string $userPassword;
     private string $userPlainPassword;
+    /**
+     * @ORM\Column(name="user_mail", type="string", length=100, nullable=false)
+     */
     private string $userMail;
+    /**
+     * @ORM\Column(name="user_active", type="boolean", nullable=false)
+     */
     private bool $userActive = false;
+    /**
+     * @ORM\Column(name="created", type="datetime", nullable=false, options={"default"="1999-12-31 21:00:00"})
+     */
     private \DateTime $created;
+    /**
+     * @ORM\Column(name="modified", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
+     */
     private ?\DateTime $modified = null;
 
     public function __construct()
