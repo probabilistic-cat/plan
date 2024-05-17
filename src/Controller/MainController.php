@@ -4,18 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Entity\TaskStatus;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class MainController extends AbstractController
 {
-    public function index(): Response
+    public function index(EntityManagerInterface $em): Response
     {
         $tasksTodo = [];
         $tasksInprogress = [];
         $tasksCompleted = [];
 
-        $tasks = $this->getDoctrine()->getRepository(Task::class)->findAll();
+        $tasks = $em->getRepository(Task::class)->findAll();
         foreach ($tasks as $task) {
             $taskStatusCode = $task->getTaskStatus()->getTaskStatusCode();
             if ($taskStatusCode === TaskStatus::TODO) {

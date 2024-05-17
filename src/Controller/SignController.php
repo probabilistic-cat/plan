@@ -4,13 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-// use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SignController extends AbstractController
@@ -26,7 +24,7 @@ class SignController extends AbstractController
         ]);
     }
 
-    public function signup(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function signup(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         // 1) build the form
         $user = new User();
@@ -36,11 +34,10 @@ class SignController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getUserPlainPassword());
-            $user->setUserPassword($password);
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->getUserPlainPassword());
+            $user->setUserPassword($hashedPassword);
 
             // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 

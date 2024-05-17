@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user')]
 #[ORM\UniqueConstraint(name: 'iu__user__user_mail', columns: ['user_mail'])]
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private const CREATED_DEFAULT = '1999-12-31 21:00:00';
 
@@ -120,6 +121,11 @@ class User implements UserInterface
 //    {
 //        [$this->userId, $this->userName, $this->userPassword] = unserialize($serialized);
 //    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->getUserMail();
+    }
 
     public function getPassword(): string
     {
