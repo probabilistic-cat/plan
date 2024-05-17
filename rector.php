@@ -12,7 +12,7 @@ return RectorConfig::configure()
         __DIR__.'/src',
         __DIR__.'/tests',
     ])
-    ->withPhpSets(php81: true)
+    ->withPhpSets(php83: true)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -28,7 +28,7 @@ return RectorConfig::configure()
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
         SensiolabsSetList::ANNOTATIONS_TO_ATTRIBUTES,
         SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SymfonySetList::SYMFONY_54,
+        SymfonySetList::SYMFONY_64,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
