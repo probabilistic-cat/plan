@@ -20,8 +20,8 @@ security:
             #anonymous: lazy
             lazy: true
             form_login:
-                login_path: todo_login
-                check_path: todo_login
+                login_path: app_login
+                check_path: app_login
             provider: our_db_provider
             logout:
                 path: /logout/

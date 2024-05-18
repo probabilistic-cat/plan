@@ -9,10 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SignController extends AbstractController
 {
+    #[Route('/login/', name: 'app_login')]
     public function login(AuthenticationUtils $authUtils): Response
     {
         $error = $authUtils->getLastAuthenticationError();
@@ -24,6 +26,7 @@ class SignController extends AbstractController
         ]);
     }
 
+    #[Route('/signup/', name: 'app_signup')]
     public function signup(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
     {
         // 1) build the form
@@ -44,11 +47,17 @@ class SignController extends AbstractController
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('todo_homepage');
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render('Sign/signup.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/logout', name: 'app_logout')]
+    public function logout(): never
+    {
+        throw new \BadMethodCallException('Actual logout in security.yaml');
     }
 }
