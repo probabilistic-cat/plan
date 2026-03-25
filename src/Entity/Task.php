@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -23,7 +24,7 @@ class Task
     #[ORM\Column()]
     private string $taskName;
 
-    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
     private ?string $taskDescription = null;
 
     #[ORM\Column(options: ['default' => 0])]
@@ -35,7 +36,7 @@ class Task
     #[ORM\Column(options: ['default' => '1999-12-31 20:00:00'])]
     private \DateTime $created;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, options: ['onUpdate' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTime $modified = null;
 
     #[ORM\ManyToOne()]
