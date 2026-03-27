@@ -4,39 +4,44 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Doctrine\Set\DoctrineSetList;
-use Rector\Symfony\Set\SensiolabsSetList;
+use Rector\Set\ValueObject\LevelSetList;
+use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\SymfonySetList;
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__.'/src',
-        __DIR__.'/tests',
+        __DIR__ . '/migrations',
+        __DIR__ . '/src',
+        __DIR__ . '/templates',
+        __DIR__ . '/tests',
+        __DIR__ . '/.php-cs-fixer.dist.php',
+        __DIR__ . '/rector.php',
     ])
-    ->withPhpSets(php83: true)
-    ->withPreparedSets(
-        deadCode: true,
-        codeQuality: true,
-        codingStyle: false,
-        typeDeclarations: true,
-        privatization: true,
-        naming: false,
-        instanceOf: true,
-        earlyReturn: true,
-        strictBooleans: true,
-    )
+    ->withRules([
+        Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector::class,
+    ])
     ->withSets([
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SensiolabsSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
-        SymfonySetList::SYMFONY_64,
+        LevelSetList::UP_TO_PHP_84,
+        SetList::CODE_QUALITY,
+        SetList::DEAD_CODE,
+        SetList::EARLY_RETURN,
+        SetList::INSTANCEOF,
+        SetList::PRIVATIZATION,
+        SetList::STRICT_BOOLEANS,
+        SetList::TYPE_DECLARATION,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
     ])
+    ->withAttributesSets(symfony: true, doctrine: true, phpunit: true)
+    ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
     ->withSkip([
+        __DIR__ . '/src/Kernel.php',
+        __DIR__ . '/tests/bootstrap.php',
         Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRector::class,
-        Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class => [
-            __DIR__.'/src/Entity',
-        ],
-        Rector\Php81\Rector\Property\ReadOnlyPropertyRector::class,
+        Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector::class,
+        Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector::class,
+        Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector::class,
+        Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class,
     ])
 ;
