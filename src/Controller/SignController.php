@@ -15,8 +15,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SignController extends AbstractController
 {
     #[Route('/login/', name: 'app_login')]
-    public function login(AuthenticationUtils $authUtils): Response
-    {
+    public function login(AuthenticationUtils $authUtils): Response {
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
 
@@ -27,8 +26,11 @@ class SignController extends AbstractController
     }
 
     #[Route('/signup/', name: 'app_signup')]
-    public function signup(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): Response
-    {
+    public function signup(
+        Request $request,
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $passwordHasher,
+    ): Response {
         // 1) build the form
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -56,8 +58,7 @@ class SignController extends AbstractController
     }
 
     #[Route('/logout', name: 'app_logout')]
-    public function logout(): never
-    {
+    public function logout(): never {
         throw new \BadMethodCallException('Actual logout in security.yaml');
     }
 }

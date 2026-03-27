@@ -8,13 +8,11 @@ use Symfony\Component\String\ByteString;
 
 class TestEntityHelper
 {
-    private static function getUniqueUserMail(): string
-    {
-        return ByteString::fromRandom()->toString().UserTest::USER_MAIL_TAIL;
+    private static function getUniqueUserMail(): string {
+        return ByteString::fromRandom()->toString() . UserTest::USER_MAIL_TAIL;
     }
 
-    public static function createTestUser(EntityManagerInterface $em): int
-    {
+    public static function createTestUser(EntityManagerInterface $em): int {
         $user = new User();
         $user->setUserName(UserTest::USER_NAME);
         $user->setUserMail(self::getUniqueUserMail());
@@ -26,13 +24,11 @@ class TestEntityHelper
         return $user->getUserId();
     }
 
-    public static function getTestUser(EntityManagerInterface $em, int $userId): User
-    {
+    public static function getTestUser(EntityManagerInterface $em, int $userId): User {
         return $em->getRepository(User::class)->findOneBy(['userId' => $userId]);
     }
 
-    public static function deleteTestUser(EntityManagerInterface $em, int $userId): void
-    {
+    public static function deleteTestUser(EntityManagerInterface $em, int $userId): void {
         $user = self::getTestUser($em, $userId);
         $em->remove($user);
         $em->flush();

@@ -38,106 +38,87 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTime $modified = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->created = new \DateTime(self::CREATED_DEFAULT);
     }
 
-    public function getUserId(): int
-    {
+    public function getUserId(): int {
         return $this->userId;
     }
 
-    public function setUserName(string $userName): void
-    {
+    public function setUserName(string $userName): void {
         $this->userName = $userName;
     }
 
-    public function getUserName(): string
-    {
+    public function getUserName(): string {
         return $this->userName;
     }
 
-    public function setUserPassword(string $userPassword): void
-    {
+    public function setUserPassword(string $userPassword): void {
         $this->userPassword = $userPassword;
     }
 
-    public function getUserPassword(): string
-    {
+    public function getUserPassword(): string {
         return $this->userPassword;
     }
 
-    public function setUserPlainPassword(string $userPlainPassword): void
-    {
+    public function setUserPlainPassword(string $userPlainPassword): void {
         $this->userPlainPassword = $userPlainPassword;
     }
 
-    public function getUserPlainPassword(): string
-    {
+    public function getUserPlainPassword(): string {
         return $this->userPlainPassword;
     }
 
-    public function setUserMail(string $userMail): void
-    {
+    public function setUserMail(string $userMail): void {
         $this->userMail = $userMail;
     }
 
-    public function getUserMail(): string
-    {
+    public function getUserMail(): string {
         return $this->userMail;
     }
 
-    public function setUserActive(bool $userActive): void
-    {
+    public function setUserActive(bool $userActive): void {
         $this->userActive = $userActive;
     }
 
-    public function getUserActive(): bool
-    {
+    public function getUserActive(): bool {
         return $this->userActive;
     }
 
-    public function getCreated(): \DateTime
-    {
+    public function getCreated(): \DateTime {
         return $this->created;
     }
 
-    public function getModified(): ?\DateTime
-    {
+    public function getModified(): ?\DateTime {
         return $this->modified;
     }
 
-//    public function serialize(): string
-//    {
-//        return serialize([
-//            $this->userId,
-//            $this->userName,
-//            $this->userPassword,
-//        ]);
-//    }
+    //public function serialize(): string
+    //{
+    //    return serialize([
+    //        $this->userId,
+    //        $this->userName,
+    //        $this->userPassword,
+    //    ]);
+    //}
+    //
+    //public function unserialize(string $serialized): void
+    //{
+    //    [$this->userId, $this->userName, $this->userPassword] = unserialize($serialized);
+    //}
 
-//    public function unserialize(string $serialized): void
-//    {
-//        [$this->userId, $this->userName, $this->userPassword] = unserialize($serialized);
-//    }
-
-    public function getUserIdentifier(): string
-    {
+    public function getUserIdentifier(): string {
         return $this->getUserMail();
     }
 
-    public function getPassword(): string
-    {
+    public function getPassword(): string {
         return $this->getUserPassword();
     }
 
-    public function getRoles(): array
-    {
+    public function getRoles(): array {
         return ['ROLE_USER'];
     }
 
-    public function eraseCredentials(): void
-    {
-    }
+    public function eraseCredentials(): void {}
 }

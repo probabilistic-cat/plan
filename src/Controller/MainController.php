@@ -12,8 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function index(EntityManagerInterface $em): Response
-    {
+    public function index(EntityManagerInterface $em): Response {
         $tasksTodo = [];
         $tasksInprogress = [];
         $tasksCompleted = [];
@@ -38,8 +37,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/admin/', name: 'app_admin')]
-    public function admin(): Response
-    {
+    public function admin(): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!1');
 
         return new Response('<html><body>Admin page!</body></html>');

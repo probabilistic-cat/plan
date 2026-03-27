@@ -15,21 +15,18 @@ class UserTest extends KernelTestCase
     private EntityManagerInterface $em;
     private ?int $userId;
 
-    protected function setUp(): void
-    {
+    protected function setUp(): void {
         parent::setUp();
         $this->em = self::bootKernel()->getContainer()->get('doctrine.orm.entity_manager');
         $this->userId = TestEntityHelper::createTestUser($this->em);
     }
 
-    protected function tearDown(): void
-    {
+    protected function tearDown(): void {
         parent::tearDown();
         TestEntityHelper::deleteTestUser($this->em, $this->userId);
     }
 
-    public function testUserFields(): void
-    {
+    public function testUserFields(): void {
         $user = TestEntityHelper::getTestUser($this->em, $this->userId);
         $this->assertEquals(self::USER_NAME, $user->getUserName());
         $this->assertEquals(self::USER_ACTIVE, $user->getUserActive());

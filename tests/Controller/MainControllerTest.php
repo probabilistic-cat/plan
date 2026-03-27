@@ -7,8 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MainControllerTest extends WebTestCase
 {
-    public function testIndex(): void
-    {
+    public function testIndex(): void {
         $client = static::createClient();
         $client->request('GET', '/');
         $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());

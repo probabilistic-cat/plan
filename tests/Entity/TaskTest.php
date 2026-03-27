@@ -16,33 +16,28 @@ class TaskTest extends KernelTestCase
     private ?int $userId;
     private ?int $taskId;
 
-    protected function setUp(): void
-    {
+    protected function setUp(): void {
         parent::setUp();
         $this->em = self::bootKernel()->getContainer()->get('doctrine.orm.entity_manager');
         $this->userId = TestEntityHelper::createTestUser($this->em);
         $this->taskId = $this->createTestTask($this->em);
     }
 
-    protected function tearDown(): void
-    {
+    protected function tearDown(): void {
         parent::tearDown();
         $this->deleteTestTask($this->em);
         TestEntityHelper::deleteTestUser($this->em, $this->userId);
     }
 
-    private static function getTaskStatus(EntityManagerInterface $em, string $taskStatusCode): TaskStatus
-    {
+    private static function getTaskStatus(EntityManagerInterface $em, string $taskStatusCode): TaskStatus {
         return $em->getRepository(TaskStatus::class)->findOneBy(['taskStatusCode' => $taskStatusCode]);
     }
 
-    private static function getTestTask(EntityManagerInterface $em, int $taskId): Task
-    {
+    private static function getTestTask(EntityManagerInterface $em, int $taskId): Task {
         return $em->getRepository(Task::class)->findOneBy(['taskId' => $taskId]);
     }
 
-    private function createTestTask(EntityManagerInterface $em): int
-    {
+    private function createTestTask(EntityManagerInterface $em): int {
         $user = TestEntityHelper::getTestUser($em, $this->userId);
         $taskStatus = self::getTaskStatus($em, TaskStatus::TODO);
         $task = new Task($user, $taskStatus);
@@ -54,15 +49,13 @@ class TaskTest extends KernelTestCase
         return $task->getTaskId();
     }
 
-    private function deleteTestTask(EntityManagerInterface $em): void
-    {
+    private function deleteTestTask(EntityManagerInterface $em): void {
         $task = self::getTestTask($em, $this->taskId);
         $em->remove($task);
         $em->flush();
     }
 
-    public function testTaskFields(): void
-    {
+    public function testTaskFields(): void {
         $task = self::getTestTask($this->em, $this->taskId);
         $this->assertEquals(self::TASK_NAME, $task->getTaskName());
         $this->assertEquals(self::TASK_DESCRIPTION, $task->getTaskDescription());

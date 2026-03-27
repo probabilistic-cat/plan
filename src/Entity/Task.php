@@ -47,90 +47,73 @@ class Task
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'NO ACTION')]
     private User $user;
 
-    public function __construct(User $user, TaskStatus $taskStatus)
-    {
+    public function __construct(User $user, TaskStatus $taskStatus) {
         $this->created = new \DateTime(self::CREATED_DEFAULT);
         $this->user = $user;
         $this->taskStatus = $taskStatus;
     }
 
-    public function getTaskId(): int
-    {
+    public function getTaskId(): int {
         return $this->taskId;
     }
 
-    public function setTaskParentId(int $taskParentId): void
-    {
+    public function setTaskParentId(int $taskParentId): void {
         $this->taskParentId = $taskParentId;
     }
 
-    public function getTaskParentId(): ?int
-    {
+    public function getTaskParentId(): ?int {
         return $this->taskParentId;
     }
 
-    public function setTaskName(string $taskName): void
-    {
+    public function setTaskName(string $taskName): void {
         $this->taskName = $taskName;
     }
 
-    public function getTaskName(): string
-    {
+    public function getTaskName(): string {
         return $this->taskName;
     }
 
-    public function setTaskDescription(string $taskDescription): void
-    {
+    public function setTaskDescription(string $taskDescription): void {
         $this->taskDescription = $taskDescription;
     }
 
-    public function getTaskDescription(): ?string
-    {
+    public function getTaskDescription(): ?string {
         return $this->taskDescription;
     }
 
-    public function setTaskEstimationTime(int $taskEstimationTime): void
-    {
+    public function setTaskEstimationTime(int $taskEstimationTime): void {
         $this->taskEstimationTime = $taskEstimationTime;
     }
 
-    public function getTaskEstimationTime(): int
-    {
+    public function getTaskEstimationTime(): int {
         return $this->taskEstimationTime;
     }
 
-    public function setTaskDueDate(\DateTime $taskDueDate): void
-    {
+    public function setTaskDueDate(\DateTime $taskDueDate): void {
         $this->taskDueDate = $taskDueDate;
     }
 
-    public function getTaskDueDate(): ?\DateTime
-    {
+    public function getTaskDueDate(): ?\DateTime {
         return $this->taskDueDate;
     }
 
-    public function getCreated(): \DateTime
-    {
+    public function getCreated(): \DateTime {
         return $this->created;
     }
 
-    public function getModified(): ?\DateTime
-    {
+    public function getModified(): ?\DateTime {
         return $this->modified;
     }
 
-    public function getUser(): User
-    {
+    public function getUser(): User {
         return $this->user;
     }
 
-    public function setTaskStatus(TaskStatus $taskStatus): void
-    {
+    public function setTaskStatus(TaskStatus $taskStatus): void {
         $this->taskStatus = $taskStatus;
     }
 
-    public function getTaskStatus(): TaskStatus
-    {
+    public function getTaskStatus(): TaskStatus {
         return $this->taskStatus;
     }
 }
