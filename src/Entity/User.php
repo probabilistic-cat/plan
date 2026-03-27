@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'iu__user__user_mail', columns: ['user_mail'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    private const CREATED_DEFAULT = '1999-12-31 21:00:00';
+    private const string CREATED_DEFAULT = '1999-12-31 21:00:00';
 
     #[ORM\Id]
     #[ORM\Column(options: ['unsigned' => true])]

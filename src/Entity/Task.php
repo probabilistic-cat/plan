@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
@@ -11,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'ix__task_task_status__task_status_code', columns: ['task_status_code'])]
 class Task
 {
-    private const CREATED_DEFAULT = '1999-12-31 21:00:00';
+    private const string CREATED_DEFAULT = '1999-12-31 21:00:00';
 
     #[ORM\Id]
     #[ORM\Column(options: ['unsigned' => true])]

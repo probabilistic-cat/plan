@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity;
 
 use App\Entity\Task;
@@ -9,8 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TaskTest extends KernelTestCase
 {
-    private const TASK_NAME = 'test task';
-    private const TASK_DESCRIPTION = 'task description';
+    private const string TASK_NAME = 'test task';
+    private const string TASK_DESCRIPTION = 'task description';
 
     private EntityManagerInterface $em;
     private ?int $userId;
@@ -18,7 +20,9 @@ class TaskTest extends KernelTestCase
 
     protected function setUp(): void {
         parent::setUp();
-        $this->em = self::bootKernel()->getContainer()->get('doctrine.orm.entity_manager');
+        self::bootKernel();
+        $container = static::getContainer();
+        $this->em = $container->get(EntityManagerInterface::class);
         $this->userId = TestEntityHelper::createTestUser($this->em);
         $this->taskId = $this->createTestTask($this->em);
     }
