@@ -9,17 +9,19 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class UserTest extends KernelTestCase
 {
-    public const USER_NAME = 'test';
-    public const USER_MAIL_TAIL = '@test.notreal';
-    public const USER_PASSWORD = '123456';
-    public const USER_ACTIVE = true;
+    public const string USER_NAME = 'test';
+    public const string USER_MAIL_TAIL = '@test.notreal';
+    public const string USER_PASSWORD = '123456';
+    public const bool USER_ACTIVE = true;
 
     private EntityManagerInterface $em;
     private ?int $userId;
 
     protected function setUp(): void {
         parent::setUp();
-        $this->em = self::bootKernel()->getContainer()->get('doctrine.orm.entity_manager');
+        self::bootKernel();
+        $container = static::getContainer();
+        $this->em = $container->get(EntityManagerInterface::class);
         $this->userId = TestEntityHelper::createTestUser($this->em);
     }
 
