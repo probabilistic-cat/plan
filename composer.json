@@ -5,13 +5,13 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/doctrine-bundle": "^3.2",
-        "doctrine/doctrine-migrations-bundle": "^4.0",
-        "doctrine/orm": "^3.6",
-        "phpdocumentor/reflection-docblock": "^6.0",
+        "doctrine/doctrine-bundle": "^3",
+        "doctrine/doctrine-migrations-bundle": "^4",
+        "doctrine/orm": "^3",
+        "phpdocumentor/reflection-docblock": "^6",
         "phpstan/phpdoc-parser": "^2.3",
         "symfony/asset": "7.4.*",
         "symfony/asset-mapper": "7.4.*",
@@ -26,7 +26,7 @@
         "symfony/intl": "7.4.*",
         "symfony/mailer": "7.4.*",
         "symfony/mime": "7.4.*",
-        "symfony/monolog-bundle": "^4.0",
+        "symfony/monolog-bundle": "^4",
         "symfony/notifier": "7.4.*",
         "symfony/process": "7.4.*",
         "symfony/property-access": "7.4.*",
@@ -42,18 +42,18 @@
         "symfony/validator": "7.4.*",
         "symfony/web-link": "7.4.*",
         "symfony/yaml": "7.4.*",
-        "twig/extra-bundle": "^3.0",
-        "twig/twig": "^3.0"
+        "twig/extra-bundle": "^3",
+        "twig/twig": "^3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.80",
-        "phpunit/phpunit": "^12.5",
-        "rector/rector": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.91",
+        "phpunit/phpunit": "^12",
+        "rector/rector": "^2",
         "symfony/browser-kit": "7.4.*",
         "symfony/css-selector": "7.4.*",
         "symfony/debug-bundle": "7.4.*",
-        "symfony/maker-bundle": "^1.0",
-        "symfony/phpunit-bridge": "^7.0",
+        "symfony/maker-bundle": "^1",
+        "symfony/phpunit-bridge": "7.4.*",
         "symfony/stopwatch": "7.4.*",
         "symfony/web-profiler-bundle": "7.4.*"
     },
@@ -65,7 +65,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "8.4"
+            "php": "8.5"
         }
     },
     "autoload": {
@@ -86,7 +86,10 @@
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
-        "symfony/polyfill-php82": "*"
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*",
+        "symfony/polyfill-php85": "*"
     },
     "scripts": {
         "auto-scripts": {
