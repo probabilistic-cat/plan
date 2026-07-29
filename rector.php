@@ -14,15 +14,13 @@ return RectorConfig::configure()
         __DIR__ . '/src',
         __DIR__ . '/templates',
         __DIR__ . '/tests',
-        __DIR__ . '/.php-cs-fixer.dist.php',
-        __DIR__ . '/rector.php',
     ])
     ->withRules([
         Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector::class,
     ])
     ->withSets([
         DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        LevelSetList::UP_TO_PHP_84,
+        LevelSetList::UP_TO_PHP_85,
         SetList::CODE_QUALITY,
         SetList::DEAD_CODE,
         SetList::EARLY_RETURN,
@@ -35,10 +33,10 @@ return RectorConfig::configure()
     ])
     ->withAttributesSets(symfony: true, doctrine: true, phpunit: true)
     ->withComposerBased(twig: true, doctrine: true, phpunit: true, symfony: true)
+    ->withImportNames(importShortClasses: false)
     ->withSkip([
         __DIR__ . '/src/Kernel.php',
         __DIR__ . '/tests/bootstrap.php',
-        Rector\CodeQuality\Rector\ClassMethod\LocallyCalledStaticMethodToNonStaticRector::class,
         Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector::class,
         Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector::class,
         Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector::class,
