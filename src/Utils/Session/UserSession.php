@@ -6,19 +6,19 @@ namespace App\Utils\Session;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class UserSession
+readonly class UserSession
 {
     private const string BAG_NAME = 'user';
 
-    public static function signIn(Session $session): void {
+    public function signIn(Session $session): void {
         $session->set(self::BAG_NAME . '/signed', true);
     }
 
-    public static function signOut(Session $session): void {
+    public function signOut(Session $session): void {
         $session->set(self::BAG_NAME . '/signed', false);
     }
 
-    public static function isSignedIn(Session $session): bool {
+    public function isSignedIn(Session $session): bool {
         return $session->get(self::BAG_NAME . '/signed');
     }
 }

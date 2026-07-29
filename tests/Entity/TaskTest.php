@@ -33,17 +33,17 @@ class TaskTest extends KernelTestCase
         TestEntityHelper::deleteTestUser($this->em, $this->userId);
     }
 
-    private static function getTaskStatus(EntityManagerInterface $em, string $taskStatusCode): TaskStatus {
+    private function getTaskStatus(EntityManagerInterface $em, string $taskStatusCode): TaskStatus {
         return $em->getRepository(TaskStatus::class)->findOneBy(['taskStatusCode' => $taskStatusCode]);
     }
 
-    private static function getTestTask(EntityManagerInterface $em, int $taskId): Task {
+    private function getTestTask(EntityManagerInterface $em, int $taskId): Task {
         return $em->getRepository(Task::class)->findOneBy(['taskId' => $taskId]);
     }
 
     private function createTestTask(EntityManagerInterface $em): int {
         $user = TestEntityHelper::getTestUser($em, $this->userId);
-        $taskStatus = self::getTaskStatus($em, TaskStatus::TODO);
+        $taskStatus = $this->getTaskStatus($em, TaskStatus::TODO);
         $task = new Task($user, $taskStatus);
         $task->setTaskName(self::TASK_NAME);
         $task->setTaskDescription(self::TASK_DESCRIPTION);
@@ -54,13 +54,13 @@ class TaskTest extends KernelTestCase
     }
 
     private function deleteTestTask(EntityManagerInterface $em): void {
-        $task = self::getTestTask($em, $this->taskId);
+        $task = $this->getTestTask($em, $this->taskId);
         $em->remove($task);
         $em->flush();
     }
 
     public function testTaskFields(): void {
-        $task = self::getTestTask($this->em, $this->taskId);
+        $task = $this->getTestTask($this->em, $this->taskId);
         $this->assertEquals(self::TASK_NAME, $task->getTaskName());
         $this->assertEquals(self::TASK_DESCRIPTION, $task->getTaskDescription());
         $this->assertEquals(TestEntityHelper::getTestUser($this->em, $this->userId), $task->getUser());
