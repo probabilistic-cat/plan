@@ -1,0 +1,18 @@
+# docker compose -f docker/docker-compose.dev.yaml --env-file .env --env-file .env.local --env-file .env.dev --env-file .env.dev.local -p todo-dev up -d
+
+include:
+    - docker-compose.base.yaml
+
+services:
+    app:
+        build:
+            target: dev
+        environment:
+            - PHP_IDE_CONFIG=serverName=${IDE_SERVER_NAME}
+        volumes:
+            - ..:/var/www:ro
+            - ../var:/var/www/var:rw
+
+    webserver:
+        volumes:
+            - ..:/var/www:ro

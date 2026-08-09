@@ -1,0 +1,21 @@
+# docker compose -f docker/docker-compose.prod.yaml --env-file .env --env-file .env.local --env-file .env.prod.local -p todo-prod up -d
+
+include:
+    - docker-compose.base.yaml
+
+services:
+    app:
+        build:
+            target: prod
+        env_file:
+            - ../.env
+            - ../.env.prod.local
+        volumes:
+            - app-code:/var/www
+
+    webserver:
+        volumes:
+            - app-code:/var/www
+
+volumes:
+    app-code:
