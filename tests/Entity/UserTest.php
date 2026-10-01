@@ -15,7 +15,7 @@ class UserTest extends KernelTestCase
     public const bool USER_ACTIVE = true;
 
     private EntityManagerInterface $em;
-    private ?int $userId;
+    private int $userId;
 
     protected function setUp(): void {
         parent::setUp();

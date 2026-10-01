@@ -27,7 +27,9 @@ class TestEntityHelper
     }
 
     public static function getTestUser(EntityManagerInterface $em, int $userId): User {
-        return $em->getRepository(User::class)->findOneBy(['userId' => $userId]);
+        $testUser = $em->getRepository(User::class)->findOneBy(['userId' => $userId]);
+        assert($testUser instanceof User);
+        return $testUser;
     }
 
     public static function deleteTestUser(EntityManagerInterface $em, int $userId): void {

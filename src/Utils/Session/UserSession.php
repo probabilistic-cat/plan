@@ -19,6 +19,7 @@ readonly class UserSession
     }
 
     public function isSignedIn(Session $session): bool {
+        /** @var bool */
         return $session->get(self::BAG_NAME . '/signed');
     }
 }

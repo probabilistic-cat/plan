@@ -15,8 +15,8 @@ class TaskTest extends KernelTestCase
     private const string TASK_DESCRIPTION = 'task description';
 
     private EntityManagerInterface $em;
-    private ?int $userId;
-    private ?int $taskId;
+    private int $userId;
+    private int $taskId;
 
     protected function setUp(): void {
         parent::setUp();
@@ -34,11 +34,15 @@ class TaskTest extends KernelTestCase
     }
 
     private function getTaskStatus(EntityManagerInterface $em, string $taskStatusCode): TaskStatus {
-        return $em->getRepository(TaskStatus::class)->findOneBy(['taskStatusCode' => $taskStatusCode]);
+        $taskStatus = $em->getRepository(TaskStatus::class)->findOneBy(['taskStatusCode' => $taskStatusCode]);
+        assert($taskStatus instanceof TaskStatus);
+        return $taskStatus;
     }
 
     private function getTestTask(EntityManagerInterface $em, int $taskId): Task {
-        return $em->getRepository(Task::class)->findOneBy(['taskId' => $taskId]);
+        $testTask = $em->getRepository(Task::class)->findOneBy(['taskId' => $taskId]);
+        assert($testTask instanceof Task);
+        return $testTask;
     }
 
     private function createTestTask(EntityManagerInterface $em): int {
