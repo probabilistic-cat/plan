@@ -1,6 +1,6 @@
 services:
     db:
-        image: mariadb:${MARIADB_VERSION}
+        image: mariadb:${MARIADB_VERSION}-noble
         environment:
             MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
             MARIADB_DATABASE: ${DB_NAME}
@@ -28,7 +28,7 @@ services:
                 condition: service_healthy
 
     webserver:
-        image: nginx:${NGINX_VERSION}
+        image: nginx:${NGINX_VERSION}-trixie
         environment:
             SERVER_NAME: ${SERVER_NAME}
         ports:
