@@ -26,7 +26,6 @@ return RectorConfig::configure()
         SetList::EARLY_RETURN,
         SetList::INSTANCEOF,
         SetList::PRIVATIZATION,
-        SetList::STRICT_BOOLEANS,
         SetList::TYPE_DECLARATION,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
@@ -37,9 +36,7 @@ return RectorConfig::configure()
     ->withSkip([
         __DIR__ . '/src/Kernel.php',
         __DIR__ . '/tests/bootstrap.php',
-        Rector\CodeQuality\Rector\Foreach_\UnusedForeachValueToArrayKeysRector::class,
         Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector::class,
-        Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector::class,
         Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class,
     ])
 ;
