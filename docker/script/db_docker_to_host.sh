@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ./docker/script/db_docker_to_host.sh plan-dev-db-1 .env.local
-# ./docker/script/db_docker_to_host.sh plan-prod-db-1 .env.prod.local
+# ./docker/script/db_docker_to_host.sh plan-prod-db-1 .env.local .env.prod.local
 
 container_name=$1
-env_file=$2
-if [[ -z "$container_name" || -z "$env_file" ]]; then
+env_files=("${@:2}")
+if [[ -z "$container_name" || ${#env_files[@]} -eq 0 ]]; then
     echo "Usage: $(basename "$0") %container_name% %env_file%"
     exit
 fi
@@ -15,11 +15,12 @@ dir_project="$dir_script"/../..
 dir_var_tmp="$dir_project"/var/tmp
 dump_filepath="$dir_var_tmp"/dump_docker_"$(date -u +%Y-%m-%d_%H-%M-%S)"_UTC.sql
 
-rm -rf "$dump_filepath"
 mkdir -p "$dir_var_tmp"
 
 set -a
-source "$dir_project"/"$env_file"
+for env_file in "${env_files[@]}"; do
+  source "$dir_project"/"$env_file"
+done
 set +a
 
 # backup before replacing host db
