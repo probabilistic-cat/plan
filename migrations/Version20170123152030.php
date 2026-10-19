@@ -17,10 +17,6 @@ final class Version20170123152030 extends AbstractMigration
     #[\Override]
     public function up(Schema $schema): void {
         $this->addSql('
-            CREATE DATABASE IF NOT EXISTS `todo` CHARACTER SET `utf8mb4` COLLATE `utf8mb4_unicode_ci`
-        ');
-
-        $this->addSql('
             CREATE TABLE IF NOT EXISTS `user` (
                 `user_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `user_name` VARCHAR(100) NOT NULL,
@@ -75,6 +71,5 @@ final class Version20170123152030 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `task`');
         $this->addSql('DROP TRIGGER IF EXISTS `user_created`');
         $this->addSql('DROP TABLE IF EXISTS `user`');
-        $this->addSql('DROP DATABASE `todo`');
     }
 }

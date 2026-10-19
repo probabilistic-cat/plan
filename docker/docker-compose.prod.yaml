@@ -1,4 +1,4 @@
-# docker compose -f docker/docker-compose.prod.yaml --env-file .env --env-file .env.local --env-file .env.prod.local -p todo-prod up -d
+# docker compose -f docker/docker-compose.prod.yaml --env-file .env --env-file .env.local --env-file .env.prod.local -p plan-prod up -d
 
 include:
     - docker-compose.base.yaml

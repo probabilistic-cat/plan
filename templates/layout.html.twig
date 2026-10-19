@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Todo{% endblock %}
+{% block title %}Plan{% endblock %}
 
 {% block css %}
     {{ parent() }}
@@ -15,7 +15,7 @@
 
 {% block body %}
     <div class="header headfoot">
-        <p class="logo"><a href="{{ path("app_homepage") }}">Todo 0.1.0</a></p>
+        <p class="logo"><a href="{{ path("app_homepage") }}">Plan</a></p>
         {#{% if app.session.get("user/signed") == 1 %}
             <p class="user_actions">
                 <a href="#">%username%</a>

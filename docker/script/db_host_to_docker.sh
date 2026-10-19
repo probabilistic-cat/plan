@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# ./docker/script/db_host_to_docker.sh todo-dev-db-1 .env.local
-# ./docker/script/db_host_to_docker.sh todo-prod-db-1 .env.prod.local
+# ./docker/script/db_host_to_docker.sh plan-dev-db-1 .env.local
+# ./docker/script/db_host_to_docker.sh plan-prod-db-1 .env.prod.local
 
 container_name=$1
 env_file=$2
