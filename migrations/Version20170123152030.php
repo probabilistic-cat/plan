@@ -49,8 +49,8 @@ final class Version20170123152030 extends AbstractMigration
                 `modified` TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`task_id`),
                 INDEX `ix__task__user_id`(`user_id` ASC),
-                CONSTRAINT 
-                    FOREIGN KEY fk__task_user__user_id(`user_id`) 
+                CONSTRAINT `fk__task_user__user_id`
+                    FOREIGN KEY (`user_id`)
                     REFERENCES `user`(`user_id`)
                     ON UPDATE CASCADE ON DELETE NO ACTION
             )

@@ -24,13 +24,13 @@ final class Version20240517152030 extends AbstractMigration
 
         $this->addSql('
             ALTER TABLE `task`
-                ADD CONSTRAINT
-                    FOREIGN KEY fk__task_user__user_id(`user_id`)
-                    REFERENCES `user`(`user_id`) 
+                ADD CONSTRAINT `fk__task_user__user_id`
+                    FOREIGN KEY (`user_id`)
+                    REFERENCES `user`(`user_id`)
                     ON DELETE NO ACTION,
-                ADD CONSTRAINT
-                    FOREIGN KEY fk__task_task_status__task_status_code(`task_status_code`)
-                    REFERENCES `task_status`(`task_status_code`) 
+                ADD CONSTRAINT `fk__task_task_status__task_status_code`
+                    FOREIGN KEY (`task_status_code`)
+                    REFERENCES `task_status`(`task_status_code`)
                     ON DELETE NO ACTION
         ');
     }
@@ -40,18 +40,18 @@ final class Version20240517152030 extends AbstractMigration
         $this->addSql('
             ALTER TABLE `task`
                 DROP FOREIGN KEY `fk__task_user__user_id`,
-                DROP FOREIGN KEY `fk__task_task_status__task_status_code`,
+                DROP FOREIGN KEY `fk__task_task_status__task_status_code`
         ');
 
         $this->addSql('
             ALTER TABLE `task`
-                ADD CONSTRAINT 
-                    FOREIGN KEY fk__task_user__user_id(`user_id`) 
-                    REFERENCES `user`(`user_id`) 
+                ADD CONSTRAINT `fk__task_user__user_id`
+                    FOREIGN KEY (`user_id`)
+                    REFERENCES `user`(`user_id`)
                     ON UPDATE CASCADE ON DELETE NO ACTION,
-                ADD CONSTRAINT 
-                    FOREIGN KEY fk__task_task_status__task_status_code(`task_status_code`) 
-                    REFERENCES `task_status`(`task_status_code`) 
+                ADD CONSTRAINT `fk__task_task_status__task_status_code`
+                    FOREIGN KEY (`task_status_code`)
+                    REFERENCES `task_status`(`task_status_code`)
                     ON UPDATE CASCADE ON DELETE NO ACTION
         ');
     }

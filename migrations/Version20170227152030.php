@@ -32,8 +32,8 @@ final class Version20170227152030 extends AbstractMigration
             ALTER TABLE `task`
                 ADD COLUMN `task_status_code` VARCHAR(32) NOT NULL DEFAULT "todo" AFTER `task_description`,
                 ADD INDEX `ix__task_task_status__task_status_code`(`task_status_code` ASC),
-                ADD CONSTRAINT 
-                    FOREIGN KEY fk__task_task_status__task_status_code(`task_status_code`) 
+                ADD CONSTRAINT `fk__task_task_status__task_status_code`
+                    FOREIGN KEY (`task_status_code`)
                     REFERENCES `task_status`(`task_status_code`)
                     ON UPDATE CASCADE ON DELETE NO ACTION
         ');
