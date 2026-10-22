@@ -15,24 +15,24 @@
 
 {% block body %}
     <div class="header headfoot">
-        <p class="logo"><a href="{{ path("app_homepage") }}">Plan</a></p>
+        <p class="logo"><a href="{{ path("route_index") }}">Plan</a></p>
         {#{% if app.session.get("user/signed") == 1 %}
             <p class="user_actions">
                 <a href="#">%username%</a>
             </p>#}
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <p class="user_actions">
-                <a href="{{ path("app_logout") }}">Log out</a>
+                <a href="{{ path("route_logout") }}">Log out</a>
             </p>
             <p class="user_actions">
                 <a href="#">{{ app.user.username }}</a>
             </p>
         {% else %}
             <p class="user_actions">
-                <a href="{{ path("app_signup") }}">Sign up</a>
+                <a href="{{ path("route_signup") }}">Sign up</a>
             </p>
             <p class="user_actions">
-                <a href="{{ path("app_login") }}">Log in</a>
+                <a href="{{ path("route_login") }}">Log in</a>
             </p>
         {% endif %}
 

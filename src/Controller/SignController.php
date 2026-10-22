@@ -16,7 +16,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SignController extends AbstractController
 {
-    #[Route('/login/', name: 'app_login')]
+    public const string ROUTE_LOGIN = 'route_login';
+    public const string ROUTE_SIGNUP = 'route_signup';
+    public const string ROUTE_LOGOUT = 'route_logout';
+
+    #[Route('/login/', name: self::ROUTE_LOGIN)]
     public function login(AuthenticationUtils $authUtils): Response {
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
@@ -27,7 +31,7 @@ class SignController extends AbstractController
         ]);
     }
 
-    #[Route('/signup/', name: 'app_signup')]
+    #[Route('/signup/', name: self::ROUTE_SIGNUP)]
     public function signup(
         Request $request,
         EntityManagerInterface $em,
@@ -51,7 +55,7 @@ class SignController extends AbstractController
             // ... do any other work - like sending them an email, etc
             // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('app_homepage');
+            return $this->redirectToRoute(MainController::ROUTE_INDEX);
         }
 
         return $this->render('Sign/signup.html.twig', [
@@ -59,7 +63,7 @@ class SignController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
+    #[Route('/logout', name: self::ROUTE_LOGOUT)]
     public function logout(): never {
         throw new \BadMethodCallException('Actual logout in security.yaml');
     }

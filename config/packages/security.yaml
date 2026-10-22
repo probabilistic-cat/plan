@@ -21,11 +21,11 @@ security:
             #anonymous: lazy
             lazy: true
             form_login:
-                login_path: app_login
-                check_path: app_login
+                login_path: route_login
+                check_path: route_login
             provider: our_db_provider
             logout:
-                path: /logout/
+                path: /logout
                 target: /
             #provider: users_in_memory
 

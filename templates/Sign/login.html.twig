@@ -15,7 +15,7 @@
     {% endif %}
 
     <div class="sign_form">
-    <form id="sign_form" action="{{ path('app_login') }}" method="post">
+    <form id="sign_form" action="{{ path('route_login') }}" method="post">
         <input id="username" class="sign_element" type="text" name="_username" value="{{ last_username }}"
                placeholder="Email" />
         <input id="password" class="sign_element" type="password" name="_password" placeholder="Password" />
