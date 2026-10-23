@@ -1,0 +1,19 @@
+{
+    "version": 1,
+    "servers": [
+        {
+            "id": "phpantom",
+            "enabled": true,
+            "include": ["**/*.php"],
+            "rootMarkers": ["composer.json"],
+            "bin": "phpantom_lsp",
+            "args": ["--stdio"],
+            "cwd": "{root}",
+            "languageIdByExtension": {
+                ".php": "php"
+            },
+            "startupTimeoutMs": 45000,
+            "diagnosticsWaitMs": 1500
+        }
+    ]
+}
