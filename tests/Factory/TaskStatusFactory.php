@@ -16,11 +16,13 @@ final class TaskStatusFactory extends PersistentObjectFactory
     }
 
     protected function defaults(): array {
-        return ['taskStatusCode' => self::faker()->randomElement([
-            TaskStatus::TODO,
-            TaskStatus::INPROGRESS,
-            TaskStatus::COMPLETED,
-        ])];
+        return [
+            'code' => self::faker()->randomElement([
+                TaskStatus::TODO,
+                TaskStatus::INPROGRESS,
+                TaskStatus::COMPLETED,
+            ]),
+        ];
     }
 
     protected function initialize(): self {
@@ -30,14 +32,14 @@ final class TaskStatusFactory extends PersistentObjectFactory
     }
 
     public static function todo(): self {
-        return self::new(['taskStatusCode' => TaskStatus::TODO]);
+        return self::new(['code' => TaskStatus::TODO]);
     }
 
     public static function inProgress(): self {
-        return self::new(['taskStatusCode' => TaskStatus::INPROGRESS]);
+        return self::new(['code' => TaskStatus::INPROGRESS]);
     }
 
     public static function completed(): self {
-        return self::new(['taskStatusCode' => TaskStatus::COMPLETED]);
+        return self::new(['code' => TaskStatus::COMPLETED]);
     }
 }

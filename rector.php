@@ -38,5 +38,6 @@ return RectorConfig::configure()
         __DIR__ . '/tests/bootstrap.php',
         Rector\CodeQuality\Rector\FunctionLike\SimplifyUselessVariableRector::class,
         Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class,
+        Rector\Symfony\CodeQuality\Rector\MethodCall\AssertSameResponseCodeWithDebugContentsRector::class,
     ])
 ;

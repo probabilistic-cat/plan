@@ -16,10 +16,10 @@ final class UserFactory extends PersistentObjectFactory
 
     protected function defaults(): array {
         return [
-            'userName' => self::faker()->userName(),
-            'userMail' => self::faker()->unique()->safeEmail(),
-            'userPassword' => 'password',
-            'userActive' => true,
+            'mail' => self::faker()->unique()->safeEmail(),
+            'name' => self::faker()->userName(),
+            'password' => 'password',
+            'active' => true,
         ];
     }
 }

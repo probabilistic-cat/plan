@@ -17,11 +17,11 @@ final class TaskFactory extends PersistentObjectFactory
 
     protected function defaults(): array {
         return [
-            'taskName' => self::faker()->sentence(3),
-            'taskDescription' => self::faker()->optional()->text(255),
-            'taskEstimationTime' => 0,
             'user' => UserFactory::new(),
-            'taskStatus' => TaskStatusFactory::findOrCreate(['taskStatusCode' => TaskStatus::TODO]),
+            'taskStatus' => TaskStatusFactory::findOrCreate(['code' => TaskStatus::TODO]),
+            'name' => self::faker()->sentence(3),
+            'description' => self::faker()->optional()->text(255),
+            'estMinutes' => null,
         ];
     }
 }

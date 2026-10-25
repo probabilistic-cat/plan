@@ -4,118 +4,38 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Common\IdField;
+use App\Entity\Common\TimestampFields;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'task')]
 #[ORM\Index(name: 'ix__task__user_id', columns: ['user_id'])]
-#[ORM\Index(name: 'ix__task_task_status__task_status_code', columns: ['task_status_code'])]
+#[ORM\Index(name: 'ix__task__task_status_id', columns: ['task_status_id'])]
+#[ORM\HasLifecycleCallbacks]
 class Task
 {
-    private const string CREATED_DEFAULT = '1999-12-31 21:00:00';
+    use IdField;
+    use TimestampFields;
 
-    #[ORM\Id]
-    #[ORM\Column(options: ['unsigned' => true])]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private int $taskId;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
+    public User $user;
 
-    #[ORM\Column(nullable: true, options: ['unsigned' => true])]
-    private ?int $taskParentId = null;
+    #[ORM\ManyToOne(targetEntity: TaskStatus::class)]
+    #[ORM\JoinColumn(name: 'task_status_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
+    public TaskStatus $taskStatus;
 
-    #[ORM\Column()]
-    private string $taskName;
+    #[ORM\Column(type: Types::TEXT)]
+    public string $name;
 
-    #[ORM\Column(type: Types::TEXT, length: 65535, nullable: true)]
-    private ?string $taskDescription = null;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    public ?string $description = null;
 
-    #[ORM\Column(options: ['default' => 0])]
-    private int $taskEstimationTime = 0;
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    public ?int $estMinutes = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $taskDueDate = null;
-
-    #[ORM\Column(options: ['default' => '1999-12-31 20:00:00'])]
-    private \DateTime $created;
-
-    #[ORM\Column(nullable: true, options: ['onUpdate' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTime $modified = null;
-
-    #[ORM\ManyToOne()]
-    #[ORM\JoinColumn(name: 'task_status_code', referencedColumnName: 'task_status_code', nullable: false, onDelete: 'NO ACTION', options: ['default' => 'todo'])]
-    private TaskStatus $taskStatus;
-
-    #[ORM\ManyToOne()]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'user_id', nullable: false, onDelete: 'NO ACTION')]
-    private User $user;
-
-    public function __construct(User $user, TaskStatus $taskStatus) {
-        $this->created = new \DateTime(self::CREATED_DEFAULT);
-        $this->user = $user;
-        $this->taskStatus = $taskStatus;
-    }
-
-    public function getTaskId(): int {
-        return $this->taskId;
-    }
-
-    public function setTaskParentId(int $taskParentId): void {
-        $this->taskParentId = $taskParentId;
-    }
-
-    public function getTaskParentId(): ?int {
-        return $this->taskParentId;
-    }
-
-    public function setTaskName(string $taskName): void {
-        $this->taskName = $taskName;
-    }
-
-    public function getTaskName(): string {
-        return $this->taskName;
-    }
-
-    public function setTaskDescription(string $taskDescription): void {
-        $this->taskDescription = $taskDescription;
-    }
-
-    public function getTaskDescription(): ?string {
-        return $this->taskDescription;
-    }
-
-    public function setTaskEstimationTime(int $taskEstimationTime): void {
-        $this->taskEstimationTime = $taskEstimationTime;
-    }
-
-    public function getTaskEstimationTime(): int {
-        return $this->taskEstimationTime;
-    }
-
-    public function setTaskDueDate(\DateTime $taskDueDate): void {
-        $this->taskDueDate = $taskDueDate;
-    }
-
-    public function getTaskDueDate(): ?\DateTime {
-        return $this->taskDueDate;
-    }
-
-    public function getCreated(): \DateTime {
-        return $this->created;
-    }
-
-    public function getModified(): ?\DateTime {
-        return $this->modified;
-    }
-
-    public function getUser(): User {
-        return $this->user;
-    }
-
-    public function setTaskStatus(TaskStatus $taskStatus): void {
-        $this->taskStatus = $taskStatus;
-    }
-
-    public function getTaskStatus(): TaskStatus {
-        return $this->taskStatus;
-    }
+    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    public ?int $dueDate = null;
 }

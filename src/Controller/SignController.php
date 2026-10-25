@@ -45,8 +45,8 @@ class SignController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // 3) Encode the password (you could also do this via Doctrine listener)
-            $hashedPassword = $passwordHasher->hashPassword($user, $user->getUserPlainPassword());
-            $user->setUserPassword($hashedPassword);
+            $hashedPassword = $passwordHasher->hashPassword($user, $user->plainPassword);
+            $user->password = $hashedPassword;
 
             // 4) save the User!
             $em->persist($user);

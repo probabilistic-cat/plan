@@ -4,29 +4,20 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Common\IdField;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'task_status')]
 class TaskStatus
 {
-    public const TODO = 'todo';
-    public const INPROGRESS = 'in_progress';
-    public const COMPLETED = 'completed';
+    use IdField;
 
-    #[ORM\Id]
-    #[ORM\Column(length: 32)]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private readonly string $taskStatusCode;
+    public const string TODO = 'todo';
+    public const string INPROGRESS = 'in_progress';
+    public const string COMPLETED = 'completed';
 
-    public function __construct(string $taskStatusCode) {
-        if (!in_array($taskStatusCode, [self::TODO, self::INPROGRESS, self::COMPLETED], true)) {
-            throw new \InvalidArgumentException('Wrong task status code.');
-        }
-        $this->taskStatusCode = $taskStatusCode;
-    }
-
-    public function getTaskStatusCode(): string {
-        return $this->taskStatusCode;
-    }
+    #[ORM\Column(type: Types::TEXT)]
+    public string $code;
 }

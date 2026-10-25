@@ -10,7 +10,7 @@ security:
         our_db_provider:
             entity:
                 class: App\Entity\User
-                property: userMail
+                property: mail
         users_in_memory: { memory: null }
     firewalls:
         dev:
