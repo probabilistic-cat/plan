@@ -23,6 +23,7 @@ security:
             form_login:
                 login_path: route_login
                 check_path: route_login
+                enable_csrf: true
             provider: our_db_provider
             logout:
                 path: /logout

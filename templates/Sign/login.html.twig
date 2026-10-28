@@ -19,6 +19,7 @@
         <input id="username" class="sign_element" type="text" name="_username" value="{{ last_username }}"
                placeholder="Email" />
         <input id="password" class="sign_element" type="password" name="_password" placeholder="Password" />
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
         <div class="sign_element" id="sign_form_submit">
             <p>Log in</p>
         </div>
