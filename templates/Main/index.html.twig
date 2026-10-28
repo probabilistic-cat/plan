@@ -19,7 +19,7 @@
         <div class="tasks">
             {% for taskTodo in tasksTodo %}
             <div class="task">
-                <p>{{ taskTodo.taskName }}</p>
+                <p>{{ taskTodo.name }}</p>
             </div>
             {% endfor %}
         </div>
@@ -31,7 +31,7 @@
         <div class="tasks">
             {% for taskInprogress in tasksInprogress %}
             <div class="task">
-                <p>{{ taskInprogress.taskName }}</p>
+                <p>{{ taskInprogress.name }}</p>
             </div>
             {% endfor %}
         </div>
@@ -43,7 +43,7 @@
         <div class="tasks">
             {% for taskCompleted in tasksCompleted %}
             <div class="task">
-                <p>{{ taskCompleted.taskName }}</p>
+                <p>{{ taskCompleted.name }}</p>
             </div>
             {% endfor %}
         </div>
