@@ -61,3 +61,6 @@
 ## Commands
 - Test suite: `php bin/phpunit`
 - Static analysis: `composer phpstan`
+
+## Restrictions
+- Do not execute migrations.
