@@ -11,7 +11,7 @@
 - Always pass the absolute path to a specific source file when calling an LSP tool. Never pass a project directory, directory path, or workspace root as the target document.
 - For this project, use PHPantom for PHP language intelligence. Follow the LSP tools' actual input schema rather than assuming parameter names or formats.
 
-## Documentation and Context7
+## Documentation
 - Use the available Context7 MCP tools to consult up-to-date official documentation when a task depends on Symfony APIs, framework behavior, configuration, or version-specific features.
 - Resolve the relevant library ID before querying documentation unless a valid Context7 library ID is already known.
 - Prefer documentation explicitly matching Symfony 7.4.
@@ -38,6 +38,7 @@
 - Handle errors and invalid input using the project's existing conventions and appropriate Symfony mechanisms.
 - Do not modify generated files, vendor code, or unrelated configuration unless explicitly required.
 - Never introduce secrets, credentials, or environment-specific private values into tracked files.
+- Use only English language in comments and .md files.
 
 ## Testing and Verification
 - Inspect the project's existing test structure and available Composer scripts before choosing verification commands.
@@ -62,5 +63,26 @@
 - Test suite: `php bin/phpunit`
 - Static analysis: `composer phpstan`
 
+## Frontend Development
+- Use the chrome-devtools MCP tools when developing, debugging, or verifying frontend code involving HTML, Twig templates, CSS, or JavaScript.
+- Inspect the actual rendered page in the browser before making assumptions about layout, DOM structure, styles, or runtime behavior.
+- Use browser inspection to diagnose JavaScript errors, console warnings, failed network requests, and rendering issues.
+- After making changes, verify the result in the browser whenever practical. Check relevant viewport sizes and interactions when they affect the task.
+- Use live DOM, computed styles, console output, and network activity as evidence rather than relying solely on source code.
+- For Twig templates, distinguish between template source and the rendered HTML. Inspect the rendered output when debugging template-related issues.
+- Do not assume a page is correct merely because the code looks correct or the build succeeds.
+- Avoid unrelated browser interactions or changes to application data. Do not expose credentials, session tokens, or other sensitive information in logs or reports.
+- If browser access or a required DevTools tool is unavailable, continue with source-level analysis and clearly state what could not be verified.
+
+## Agent skills
+### Issue tracker
+- Issues and specs are tracked as local markdown files under `.scratch/`. See `docs/agents/issue-tracker.md`.
+### Triage labels
+- Five canonical role labels: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+### Domain docs
+- Single-context layout: one `GLOSSARY.md` at the repo root + `docs/adr/` for ADRs. See `docs/agents/domain.md`.
+
 ## Restrictions
 - Do not execute migrations.
+- Do not commit or push to git repo.
+- Do not read or edit files: .env.local, .env.dev.local, .env.prod.local, .env.test.local
