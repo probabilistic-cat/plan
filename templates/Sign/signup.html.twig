@@ -1,18 +1,15 @@
 {% extends "layout.html.twig" %}
 
-{#{% block css %}
+{% block css %}
     {{ parent() }}
     <link href="{{ asset('css/content_login.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('js/sign.js') }}"></script>
-{% endblock %}#}
 
 {% block content %}
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-
-        <button type="submit">Sign up</button>
-    {{ form_end(form) }}
+    <div class="sign_form">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="sign_element" id="sign_form_submit">Sign up</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

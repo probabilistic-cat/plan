@@ -4,10 +4,6 @@
     {{ parent() }}
     <link href="{{ asset('css/content_login.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
-{% block js %}
-    {{ parent() }}
-    <script src="{{ asset('js/login.js') }}"></script>
-{% endblock %}
 
 {% block content %}
     {% if error %}
@@ -20,9 +16,8 @@
                placeholder="Email" />
         <input id="password" class="sign_element" type="password" name="_password" placeholder="Password" />
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-        <div class="sign_element" id="sign_form_submit">
-            <p>Log in</p>
-        </div>
+
+        <button type="submit" class="sign_element" id="sign_form_submit">Log in</button>
         {#
             If you want to control the URL the user
             is redirected to on success (more details below)
