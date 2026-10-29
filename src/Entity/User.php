@@ -16,8 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'iu__user__mail', columns: ['mail'])]
+#[ORM\UniqueConstraint(name: 'iu__user__name', columns: ['name'])]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['mail'], message: 'This email is already taken.', errorPath: 'mail')]
+#[UniqueEntity(fields: ['name'], message: 'This name is already taken.', errorPath: 'name')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use IdField;
@@ -30,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 2, max: 100)]
+    #[Assert\Length(min: 3, max: 32)]
     public string $name;
 
     #[ORM\Column(length: 60, options: ['fixed' => true])]
