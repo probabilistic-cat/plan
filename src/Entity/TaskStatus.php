@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'task_status')]
-class TaskStatus
+final class TaskStatus
 {
     use IdField;
 

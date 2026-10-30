@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['mail'], message: 'This email is already taken.', errorPath: 'mail')]
 #[UniqueEntity(fields: ['name'], message: 'This name is already taken.', errorPath: 'name')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+final class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use IdField;
     use TimestampFields;

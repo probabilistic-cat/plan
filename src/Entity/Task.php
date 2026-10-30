@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'ix__task__user_id', columns: ['user_id'])]
 #[ORM\Index(name: 'ix__task__task_status_id', columns: ['task_status_id'])]
 #[ORM\HasLifecycleCallbacks]
-class Task
+final class Task
 {
     use IdField;
     use TimestampFields;
