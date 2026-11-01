@@ -9,10 +9,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20261025110736 extends AbstractMigration
 {
-    public function getDescription(): string {
-        return '';
-    }
-
     public function up(Schema $schema): void {
         $this->addSql('
             CREATE TABLE task_status (

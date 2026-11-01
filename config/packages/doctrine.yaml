@@ -23,7 +23,7 @@ doctrine:
                         dir: '%kernel.project_dir%/src/Entity'
                         prefix: 'App\Entity'
                         alias: App
-            migration:
+            migration_em:
                 connection: migration_conn
                 naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
                 mappings:

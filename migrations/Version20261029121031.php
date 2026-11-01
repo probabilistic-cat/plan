@@ -9,10 +9,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20261029121031 extends AbstractMigration
 {
-    public function getDescription(): string {
-        return '';
-    }
-
     public function up(Schema $schema): void {
         $this->addSql('CREATE UNIQUE INDEX iu__user__name ON "user" (name)');
     }
