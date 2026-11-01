@@ -20,7 +20,7 @@ final class TaskFactory extends PersistentObjectFactory
             'user' => UserFactory::new(),
             'taskStatus' => TaskStatusFactory::findOrCreate(['code' => TaskStatus::TODO]),
             'name' => self::faker()->sentence(3),
-            'description' => self::faker()->optional()->text(255),
+            'description' => self::faker()->optional()->text(),
             'estMinutes' => null,
         ];
     }

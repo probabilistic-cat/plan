@@ -19,4 +19,8 @@ abstract class ApplicationTestCase extends WebTestCase
         $this->client = static::createClient();
         $this->router = static::getContainer()->get('router');
     }
+
+    public static function setUpBeforeClass(): void {
+        self::setBrowserKitAssertionsAsVerbose(false);
+    }
 }
