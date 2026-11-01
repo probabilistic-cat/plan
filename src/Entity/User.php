@@ -25,6 +25,9 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     use IdField;
     use TimestampFields;
 
+    public const string ROLE_USER = 'ROLE_USER';
+    public const string ROLE_ADMIN = 'ROLE_ADMIN';
+
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
     #[Assert\Email]
@@ -45,19 +48,9 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(options: ['default' => false])]
     public bool $active = false;
 
-    //public function serialize(): string
-    //{
-    //    return serialize([
-    //        $this->id,
-    //        $this->name,
-    //        $this->password,
-    //    ]);
-    //}
-    //
-    //public function unserialize(string $serialized): void
-    //{
-    //    [$this->id, $this->name, $this->password] = unserialize($serialized);
-    //}
+    /** @var list<string> */
+    #[ORM\Column(type: Types::JSONB)]
+    private(set) array $roles = [];
 
     public function getUserIdentifier(): string {
         $userMail = $this->mail;
@@ -70,8 +63,27 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function getRoles(): array {
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
+    #[\Deprecated]
     public function eraseCredentials(): void {}
+
+    public function addRole(string $role): void {
+        if (!in_array($role, $this->getAllRoles(), true)) {
+            throw new \LogicException('Unknown role.');
+        }
+
+        $this->roles[] = $role;
+        $this->roles = array_values(array_unique($this->roles));
+    }
+
+    public function deleteRole(string $role): void {
+        $this->roles = array_values(array_diff($this->roles, [$role]));
+    }
+
+    /** @return list<string> */
+    private function getAllRoles(): array {
+        return [self::ROLE_USER, self::ROLE_ADMIN];
+    }
 }
