@@ -26,10 +26,15 @@ final class Epic
     public ?string $description = null;
 
     /** @var Collection<int, Story> */
-    #[ORM\OneToMany(targetEntity: Story::class, mappedBy: 'epic', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Story::class, mappedBy: 'epic', cascade: ['persist'])]
     private(set) Collection $stories;
+
+    /** @var Collection<int, EpicTag> */
+    #[ORM\OneToMany(targetEntity: EpicTag::class, mappedBy: 'epic', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private(set) Collection $epicTags;
 
     public function __construct() {
         $this->stories = new ArrayCollection();
+        $this->epicTags = new ArrayCollection();
     }
 }

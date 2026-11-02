@@ -6,6 +6,8 @@ namespace App\Entity;
 
 use App\Entity\Common\IdField;
 use App\Entity\Common\TimestampFields;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,18 +47,26 @@ final class Task
     public int $priority;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     public User $user;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'assignee_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
+    #[ORM\JoinColumn(name: 'assignee_id', referencedColumnName: 'id', nullable: true)]
     public ?User $assignee = null;
 
     #[ORM\ManyToOne(targetEntity: TaskStatus::class)]
-    #[ORM\JoinColumn(name: 'task_status_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
+    #[ORM\JoinColumn(name: 'task_status_id', referencedColumnName: 'id', nullable: false)]
     public TaskStatus $taskStatus;
 
     #[ORM\ManyToOne(targetEntity: Story::class, inversedBy: 'tasks')]
-    #[ORM\JoinColumn(name: 'story_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
+    #[ORM\JoinColumn(name: 'story_id', referencedColumnName: 'id', nullable: true)]
     public ?Story $story = null;
+
+    /** @var Collection<int, TaskTag> */
+    #[ORM\OneToMany(targetEntity: TaskTag::class, mappedBy: 'task', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private(set) Collection $taskTags;
+
+    public function __construct() {
+        $this->taskTags = new ArrayCollection();
+    }
 }

@@ -27,14 +27,19 @@ final class Story
     public ?string $description = null;
 
     #[ORM\ManyToOne(targetEntity: Epic::class, inversedBy: 'stories')]
-    #[ORM\JoinColumn(name: 'epic_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
+    #[ORM\JoinColumn(name: 'epic_id', referencedColumnName: 'id', nullable: true)]
     public ?Epic $epic = null;
 
     /** @var Collection<int, Task> */
-    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'story', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'story', cascade: ['persist'])]
     private(set) Collection $tasks;
+
+    /** @var Collection<int, StoryTag> */
+    #[ORM\OneToMany(targetEntity: StoryTag::class, mappedBy: 'story', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private(set) Collection $storyTags;
 
     public function __construct() {
         $this->tasks = new ArrayCollection();
+        $this->storyTags = new ArrayCollection();
     }
 }
