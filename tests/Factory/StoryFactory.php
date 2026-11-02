@@ -18,6 +18,7 @@ final class StoryFactory extends PersistentObjectFactory
         return [
             'name' => self::faker()->sentence(3),
             'description' => self::faker()->optional()->text(),
+            'creator' => UserFactory::new(),
             'epic' => EpicFactory::new(),
         ];
     }

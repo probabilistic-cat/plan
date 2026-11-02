@@ -21,7 +21,7 @@ final class TaskFactory extends PersistentObjectFactory
             'description' => self::faker()->optional()->text(),
             'estMinutes' => null,
             'priority' => Task::PRIORITY_MEDIUM,
-            'user' => UserFactory::new(),
+            'creator' => UserFactory::new(),
             'assignee' => null,
             'taskStatus' => TaskStatusFactory::findOrCreate(['code' => TaskStatus::TODO]),
             'story' => StoryFactory::new(),

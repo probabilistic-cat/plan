@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'task')]
-#[ORM\Index(name: 'ix__task__user_id', columns: ['user_id'])]
+#[ORM\Index(name: 'ix__task__creator_id', columns: ['creator_id'])]
 #[ORM\Index(name: 'ix__task__assignee_id', columns: ['assignee_id'])]
 #[ORM\Index(name: 'ix__task__task_status_id', columns: ['task_status_id'])]
 #[ORM\Index(name: 'ix__task__story_id', columns: ['story_id'])]
@@ -47,8 +47,8 @@ final class Task
     public int $priority;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
-    public User $user;
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: false)]
+    public User $creator;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'assignee_id', referencedColumnName: 'id', nullable: true)]

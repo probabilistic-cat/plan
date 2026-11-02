@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'story')]
+#[ORM\Index(name: 'ix__story__creator_id', columns: ['creator_id'])]
 #[ORM\Index(name: 'ix__story__epic_id', columns: ['epic_id'])]
 #[ORM\HasLifecycleCallbacks]
 final class Story
@@ -25,6 +26,10 @@ final class Story
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     public ?string $description = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id', nullable: false)]
+    public User $creator;
 
     #[ORM\ManyToOne(targetEntity: Epic::class, inversedBy: 'stories')]
     #[ORM\JoinColumn(name: 'epic_id', referencedColumnName: 'id', nullable: true)]
