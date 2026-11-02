@@ -8,10 +8,12 @@ use App\Entity\Common\IdField;
 use App\Entity\Common\TimestampFields;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'task')]
 #[ORM\Index(name: 'ix__task__user_id', columns: ['user_id'])]
+#[ORM\Index(name: 'ix__task__assignee_id', columns: ['assignee_id'])]
 #[ORM\Index(name: 'ix__task__task_status_id', columns: ['task_status_id'])]
 #[ORM\Index(name: 'ix__task__story_id', columns: ['story_id'])]
 #[ORM\HasLifecycleCallbacks]
@@ -19,6 +21,12 @@ final class Task
 {
     use IdField;
     use TimestampFields;
+
+    public const int PRIORITY_CRITICAL = 50;
+    public const int PRIORITY_HIGH = 40;
+    public const int PRIORITY_MEDIUM = 30;
+    public const int PRIORITY_LOW = 20;
+    public const int PRIORITY_LOWEST = 10;
 
     #[ORM\Column(type: Types::TEXT)]
     public string $name;
@@ -32,15 +40,23 @@ final class Task
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     public ?int $dueDate = null;
 
+    #[ORM\Column(type: Types::SMALLINT)]
+    #[Assert\Range(min: 0, max: 50)]
+    public int $priority;
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
     public User $user;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'assignee_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
+    public ?User $assignee = null;
 
     #[ORM\ManyToOne(targetEntity: TaskStatus::class)]
     #[ORM\JoinColumn(name: 'task_status_id', referencedColumnName: 'id', nullable: false, onDelete: 'NO ACTION')]
     public TaskStatus $taskStatus;
 
-    #[ORM\ManyToOne(targetEntity: Story::class)]
+    #[ORM\ManyToOne(targetEntity: Story::class, inversedBy: 'tasks')]
     #[ORM\JoinColumn(name: 'story_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
     public ?Story $story = null;
 }

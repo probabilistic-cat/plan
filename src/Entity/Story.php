@@ -26,7 +26,7 @@ final class Story
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     public ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Epic::class)]
+    #[ORM\ManyToOne(targetEntity: Epic::class, inversedBy: 'stories')]
     #[ORM\JoinColumn(name: 'epic_id', referencedColumnName: 'id', nullable: true, onDelete: 'NO ACTION')]
     public ?Epic $epic = null;
 
