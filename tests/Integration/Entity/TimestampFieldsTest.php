@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Entity;
+namespace App\Tests\Integration\Entity;
 
 use App\Entity\Epic;
 use App\Tests\Factory\EpicFactory;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-final class TimestampFieldsTest extends TestCase
+final class TimestampFieldsTest extends KernelTestCase
 {
     public function testOnPersistTs(): void {
         /** @var Epic $epic */

@@ -107,6 +107,7 @@ final class SignControllerTest extends ApplicationTestCase
     }
 
     public function testLogout(): void {
+        /** @var User $user */
         $user = UserFactory::createOne(['mail' => self::USER_MAIL, 'password' => self::USER_PASSWORD]);
         $this->client->loginUser($user);
 
