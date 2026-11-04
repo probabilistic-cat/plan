@@ -42,4 +42,15 @@ final class Epic
         $this->stories = new ArrayCollection();
         $this->epicTags = new ArrayCollection();
     }
+
+    public function addEpicTag(EpicTag $epicTag): void {
+        if (!$this->epicTags->contains($epicTag)) {
+            $epicTag->epic = $this;
+            $this->epicTags->add($epicTag);
+        }
+    }
+
+    public function removeEpicTag(EpicTag $epicTag): void {
+        $this->epicTags->removeElement($epicTag);
+    }
 }

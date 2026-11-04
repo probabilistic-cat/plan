@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'tag')]
-#[ORM\UniqueConstraint(name: 'iu__tag__code', columns: ['code'])]
+#[ORM\UniqueConstraint(name: 'iu__tag__name', columns: ['name'])]
 #[ORM\HasLifecycleCallbacks]
 final class Tag
 {
@@ -19,5 +19,5 @@ final class Tag
     use TimestampFields;
 
     #[ORM\Column(type: Types::TEXT, length: 50, unique: true)]
-    public string $code;
+    public string $name;
 }

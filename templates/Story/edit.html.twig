@@ -1,0 +1,22 @@
+{% extends 'layout.html.twig' %}
+
+{% if is_new %}
+    {% set action = 'New' %}
+    {% set submit_name = 'Create' %}
+{% else %}
+    {% set action = 'Edit' %}
+    {% set submit_name = 'Update' %}
+{% endif %}
+
+{% block title %}{{ action }} Story{% endblock %}
+
+{% block content %}
+    <h1>{{ action }} Story</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">{{ submit_name }}</button>
+    {{ form_end(form) }}
+
+    <p><a href="{{ path('story_index') }}">Back to list</a></p>
+{% endblock %}

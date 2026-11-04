@@ -14,6 +14,10 @@ trait IdField
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     private(set) Uuid $id;
 
+    public function isNew(): bool {
+        return !isset($this->id);
+    }
+
     #[ORM\PrePersist]
     public function onPersistId(): void {
         $this->id = Uuid::v7();

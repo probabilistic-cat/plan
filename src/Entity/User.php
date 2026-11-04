@@ -43,7 +43,7 @@ final class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\NotBlank]
     #[Assert\PasswordStrength]
-    public string $plainPassword;
+    public string $plainPassword = '';
 
     #[ORM\Column(options: ['default' => false])]
     public bool $active = false;

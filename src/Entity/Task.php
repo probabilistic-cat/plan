@@ -69,4 +69,15 @@ final class Task
     public function __construct() {
         $this->taskTags = new ArrayCollection();
     }
+
+    public function addTaskTag(TaskTag $taskTag): void {
+        if (!$this->taskTags->contains($taskTag)) {
+            $taskTag->task = $this;
+            $this->taskTags->add($taskTag);
+        }
+    }
+
+    public function removeTaskTag(TaskTag $taskTag): void {
+        $this->taskTags->removeElement($taskTag);
+    }
 }

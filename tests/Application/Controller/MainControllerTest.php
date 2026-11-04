@@ -11,10 +11,8 @@ use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Factory\TaskFactory;
 use App\Tests\Factory\TaskStatusFactory;
 use App\Tests\Story\UserAdminStory;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 
-#[CoversClass(MainController::class)]
 final class MainControllerTest extends ApplicationTestCase
 {
     public function testIndexWithNoTasks(): void {

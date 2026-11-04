@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block content %}
+    <h1>Tags</h1>
+
+    {% for flash in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endfor %}
+
+    <form method="get" action="{{ path('tag_index') }}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search tags...">
+        <button type="submit">Search</button>
+    </form>
+
+    <p><a href="{{ path('tag_new') }}">Create Tag</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.name }}</td>
+                    <td>
+                        <a href="{{ path('tag_edit', {id: tag.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('tag_delete', {id: tag.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ tag.id) }}">
+                            <button type="submit" id="delete-tag-{{ tag.id }}">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">No tags found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

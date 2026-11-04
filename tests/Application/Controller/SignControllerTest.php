@@ -6,16 +6,12 @@ namespace App\Tests\Application\Controller;
 
 use App\Controller\SignController;
 use App\Entity\User;
-use App\Form\UserType;
 use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Factory\UserFactory;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-#[CoversClass(SignController::class)]
-#[CoversClass(UserType::class)]
 final class SignControllerTest extends ApplicationTestCase
 {
     private const string USER_MAIL = 'testuser@example.com';

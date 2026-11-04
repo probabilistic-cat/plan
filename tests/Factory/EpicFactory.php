@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Factory;
 
 use App\Entity\Epic;
+use Doctrine\Common\Collections\ArrayCollection;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /** @extends PersistentObjectFactory<Epic> */
@@ -19,6 +20,7 @@ final class EpicFactory extends PersistentObjectFactory
             'name' => self::faker()->sentence(3),
             'description' => self::faker()->optional()->text(),
             'creator' => UserFactory::new(),
+            'epicTags' => new ArrayCollection(),
         ];
     }
 }

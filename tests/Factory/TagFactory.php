@@ -16,7 +16,7 @@ final class TagFactory extends PersistentObjectFactory
 
     protected function defaults(): array {
         return [
-            'code' => self::faker()->unique()->word(),
+            'name' => self::faker()->unique()->word(),
         ];
     }
 }

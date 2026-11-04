@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Epics{% endblock %}
+
+{% block content %}
+    <h1>Epics</h1>
+
+    {% for flash in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endfor %}
+
+    <p><a href="{{ path('epic_new') }}">Create Epic</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for epic in epics %}
+                <tr>
+                    <td>{{ epic.name }}</td>
+                    <td>{{ epic.description ?? '' }}</td>
+                    <td>
+                        <a href="{{ path('epic_edit', {id: epic.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('epic_delete', {id: epic.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ epic.id) }}">
+                            <button type="submit" id="delete-epic-{{ epic.id }}">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No epics found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

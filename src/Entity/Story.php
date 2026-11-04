@@ -47,4 +47,15 @@ final class Story
         $this->tasks = new ArrayCollection();
         $this->storyTags = new ArrayCollection();
     }
+
+    public function addStoryTag(StoryTag $storyTag): void {
+        if (!$this->storyTags->contains($storyTag)) {
+            $storyTag->story = $this;
+            $this->storyTags->add($storyTag);
+        }
+    }
+
+    public function removeStoryTag(StoryTag $storyTag): void {
+        $this->storyTags->removeElement($storyTag);
+    }
 }

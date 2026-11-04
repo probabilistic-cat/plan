@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Stories{% endblock %}
+
+{% block content %}
+    <h1>Stories</h1>
+
+    {% for flash in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endfor %}
+
+    <p><a href="{{ path('story_new') }}">Create Story</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for story in stories %}
+                <tr>
+                    <td>{{ story.name }}</td>
+                    <td>{{ story.description ?? '' }}</td>
+                    <td>
+                        <a href="{{ path('story_edit', {id: story.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('story_delete', {id: story.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ story.id) }}">
+                            <button type="submit" id="delete-story-{{ story.id }}">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No stories found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

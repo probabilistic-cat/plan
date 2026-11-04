@@ -1,0 +1,57 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+    <h1>Tasks</h1>
+
+    {% for flash in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash }}</div>
+    {% endfor %}
+
+    <form method="get" action="{{ path('task_index') }}">
+        <label for="status">Filter by status:</label>
+        <select name="status" id="status">
+            <option value="">All</option>
+            <option value="todo" {{ statusFilter == 'todo' ? 'selected' : '' }}>To Do</option>
+            <option value="in_progress" {{ statusFilter == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+            <option value="completed" {{ statusFilter == 'completed' ? 'selected' : '' }}>Completed</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <p><a href="{{ path('task_new') }}">Create Task</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assignee</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.taskStatus.code }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.assignee.name ?? 'Unassigned' }}</td>
+                    <td>
+                        <a href="{{ path('task_edit', {id: task.id}) }}">Edit</a>
+                        <form method="post" action="{{ path('task_delete', {id: task.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_' ~ task.id) }}">
+                            <button type="submit" id="delete-task-{{ task.id }}">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">No tasks found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Log time{% endblock %}
+
+{% block content %}
+    <h1>Log time for task {{ task.id }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Add</button>
+    {{ form_end(form) }}
+
+    <p><a href="{{ path('task_index') }}">Back to list</a></p>
+{% endblock %}
