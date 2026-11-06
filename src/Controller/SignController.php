@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SignController extends AbstractController
+final class SignController extends AbstractController
 {
     public const string ROUTE_LOGIN = 'route_login';
     public const string ROUTE_SIGNUP = 'route_signup';

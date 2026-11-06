@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class MainController extends AbstractController
+final class MainController extends AbstractController
 {
     public const string ROUTE_INDEX = 'route_index';
     public const string ROUTE_ADMIN = 'route_admin';

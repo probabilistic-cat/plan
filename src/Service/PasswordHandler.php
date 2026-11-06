@@ -7,7 +7,7 @@ namespace App\Service;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-readonly class PasswordHandler
+final readonly class PasswordHandler
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
