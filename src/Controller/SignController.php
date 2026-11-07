@@ -28,6 +28,7 @@ final class SignController extends AbstractController
         return $this->render('Sign/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'active_section' => '',
         ]);
     }
 
@@ -50,6 +51,7 @@ final class SignController extends AbstractController
 
         return $this->render('Sign/signup.html.twig', [
             'form' => $form->createView(),
+            'active_section' => '',
         ]);
     }
 

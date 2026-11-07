@@ -27,6 +27,7 @@ final class EpicController extends AbstractController
         $epics = $em->getRepository(Epic::class)->findAll();
         return $this->render('Epic/index.html.twig', [
             'epics' => $epics,
+            'active_section' => 'epics',
         ]);
     }
 
@@ -81,6 +82,7 @@ final class EpicController extends AbstractController
         return $this->render('Epic/edit.html.twig', [
             'form' => $form->createView(),
             'is_new' => $isNew,
+            'active_section' => 'epics',
         ]);
     }
 }

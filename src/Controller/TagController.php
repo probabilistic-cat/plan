@@ -38,6 +38,7 @@ final class TagController extends AbstractController
         return $this->render('Tag/index.html.twig', [
             'tags' => $tags,
             'query' => $query,
+            'active_section' => 'tags',
         ]);
     }
 
@@ -86,6 +87,7 @@ final class TagController extends AbstractController
         return $this->render('Tag/edit.html.twig', [
             'form' => $form->createView(),
             'is_new' => $isNew,
+            'active_section' => 'tags',
         ]);
     }
 }

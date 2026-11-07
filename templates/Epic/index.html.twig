@@ -16,6 +16,7 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Created</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{ epic.name }}</td>
                     <td>{{ epic.description ?? '' }}</td>
+                    <td>{{ epic.createdAt ? epic.createdAt|date('Y-m-d H:i') : '' }}</td>
                     <td>
                         <a href="{{ path('epic_edit', {id: epic.id}) }}">Edit</a>
                         <form method="post" action="{{ path('epic_delete', {id: epic.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
@@ -34,7 +36,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3">No epics found.</td>
+                    <td colspan="4">No epics found.</td>
                 </tr>
             {% endfor %}
         </tbody>

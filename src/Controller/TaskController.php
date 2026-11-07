@@ -44,6 +44,7 @@ final class TaskController extends AbstractController
         return $this->render('Task/index.html.twig', [
             'tasks' => $tasks,
             'statusFilter' => $statusFilter,
+            'active_section' => 'tasks',
         ]);
     }
 
@@ -97,6 +98,7 @@ final class TaskController extends AbstractController
         return $this->render('Task/timelog.html.twig', [
             'form' => $form->createView(),
             'task' => $task,
+            'active_section' => 'tasks',
         ]);
     }
 
@@ -125,6 +127,7 @@ final class TaskController extends AbstractController
         return $this->render('Task/edit.html.twig', [
             'form' => $form->createView(),
             'is_new' => $isNew,
+            'active_section' => 'tasks',
         ]);
     }
 }

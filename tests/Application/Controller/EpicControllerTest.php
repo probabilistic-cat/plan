@@ -95,6 +95,39 @@ final class EpicControllerTest extends CRUDControllerCase
         $this->delete(EpicController::ROUTE_INDEX, '/epic', 'delete-epic-');
     }
 
+    public function testAcceptanceCreateEpic(): void {
+        $user = UserFactory::createOne();
+        $this->client->loginUser($user);
+
+        // Navigate to /epic and verify list renders
+        $this->client->request('GET', '/epic');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'Epics');
+        self::assertPageTitleSame('Epics');
+
+        // Click create
+        $this->client->clickLink('Create Epic');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Epic');
+        self::assertSelectorTextContains('h1', 'New Epic');
+
+        // Fill form and submit
+        $crawler = $this->client->getCrawler();
+        $form = $crawler->selectButton('Create')->form([
+            'epic[name]' => 'Acceptance Test Epic',
+            'epic[description]' => 'Created by acceptance test',
+        ]);
+
+        $this->client->submit($form);
+        self::assertResponseRedirects('/epic');
+
+        // Verify Epic created
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('table', 'Acceptance Test Epic');
+        self::assertPageTitleSame('Epics');
+    }
+
     protected function createOne(array $attrs = []): Epic {
         /** @var Epic */
         return EpicFactory::createOne($attrs);

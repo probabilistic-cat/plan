@@ -16,10 +16,134 @@ body {
     z-index: 1;
 }
 
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 200px;
+    min-height: 100vh;
+    flex-shrink: 0;
+}
+
+.sidebar .logo {
+    padding: 18px 0 18px 15px;
+    margin: 0;
+}
+
+.sidebar .logo a {
+    color: #f6f6f6;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.sidebar .nav {
+    padding: 10px 0;
+}
+
+.sidebar .nav-link {
+    display: block;
+    padding: 10px 15px;
+    color: #f6f6f6;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #555;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.topbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    height: 50px;
+}
+
+.topbar .user_actions {
+    margin: 0 0 0 15px;
+    font-size: 14px;
+}
+
+.topbar .user_actions a {
+    color: #f6f6f6;
+    text-decoration: none;
+}
+
+.topbar .user_actions a:hover {
+    text-decoration: underline;
+}
+
 .content {
-    float: left;
+    flex: 1;
+    padding: 20px;
+    margin: 0;
+}
+
+.content table {
     width: 100%;
-    margin: 15px 0 30px 0;
-    min-height: calc(100vh - 60px - 15px - 30px - 100px);
-    z-index: 1;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.content table th,
+.content table td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.content table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.content table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.content table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.content h1 {
+    margin-bottom: 15px;
+}
+
+.content p {
+    margin-bottom: 10px;
+}
+
+.content a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.content a:hover {
+    text-decoration: underline;
+}
+
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }

@@ -16,7 +16,6 @@
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit">{{ submit_name }}</button>
+        <a href="{{ path('epic_index') }}">Cancel</a>
     {{ form_end(form) }}
-
-    <p><a href="{{ path('epic_index') }}">Back to list</a></p>
 {% endblock %}

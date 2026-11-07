@@ -27,6 +27,7 @@ final class StoryController extends AbstractController
         $stories = $em->getRepository(Story::class)->findAll();
         return $this->render('Story/index.html.twig', [
             'stories' => $stories,
+            'active_section' => 'stories',
         ]);
     }
 
@@ -81,6 +82,7 @@ final class StoryController extends AbstractController
         return $this->render('Story/edit.html.twig', [
             'form' => $form->createView(),
             'is_new' => $isNew,
+            'active_section' => 'stories',
         ]);
     }
 }

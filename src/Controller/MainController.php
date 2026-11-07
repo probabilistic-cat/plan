@@ -38,6 +38,7 @@ final class MainController extends AbstractController
             'tasksTodo' => $tasksTodo,
             'tasksInprogress' => $tasksInprogress,
             'tasksCompleted' => $tasksCompleted,
+            'active_section' => 'board',
         ]);
     }
 
