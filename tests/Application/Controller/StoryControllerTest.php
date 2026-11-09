@@ -15,6 +15,7 @@ use App\Tests\Factory\StoryTagFactory;
 use App\Tests\Factory\TagFactory;
 use App\Tests\Factory\UserFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class StoryControllerTest extends CRUDControllerCase
 {
@@ -104,6 +105,45 @@ final class StoryControllerTest extends CRUDControllerCase
 
     public function testDeleteStory(): void {
         $this->delete(StoryController::ROUTE_INDEX, '/story', 'delete-story-');
+    }
+
+    public function testAcceptanceCreateStoryWithEpic(): void {
+        $user = UserFactory::createOne();
+        $this->client->loginUser($user);
+
+        /** @var Epic $epic */
+        $epic = EpicFactory::createOne(['creator' => $user]);
+
+        // Navigate to /story and verify list renders
+        $this->client->request(Request::METHOD_GET, $this->router->generate(StoryController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'Stories');
+        self::assertPageTitleSame('Stories');
+
+        // Click create
+        $this->client->clickLink('Create Story');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Story');
+        self::assertSelectorTextContains('h1', 'New Story');
+
+        // Fill form and submit
+        $crawler = $this->client->getCrawler();
+        $name = 'Acceptance Test Story';
+        $form = $crawler->selectButton('Create')->form([
+            'story[name]' => $name,
+            'story[description]' => 'Created by acceptance test',
+            'story[epic]' => $epic->id,
+        ]);
+
+        $this->client->submit($form);
+        self::assertResponseRedirects('/story');
+
+        // Verify Story created with Epic link
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('table', $name);
+        self::assertSelectorTextContains('table', $epic->name);
+        self::assertPageTitleSame('Stories');
     }
 
     protected function createOne(array $attrs = []): Story {

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Story;
+use App\Entity\StoryTag;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Form\Type\StoryType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/story')]
 final class StoryController extends AbstractController
@@ -79,9 +82,24 @@ final class StoryController extends AbstractController
             return $this->redirectToRoute(self::ROUTE_INDEX);
         }
 
+        $tags = json_encode(
+            array_map(
+                /** @return array{id: Uuid, name: string} */
+                static fn (Tag $tag): array => ['id' => $tag->id, 'name' => $tag->name],
+                $em->getRepository(Tag::class)->findAll(),
+            ),
+            JSON_THROW_ON_ERROR,
+        );
+        $selectedTagIds = json_encode(
+            array_map(static fn (StoryTag $st): string => (string)$st->tag->id, $story->storyTags->toArray()),
+            JSON_THROW_ON_ERROR,
+        );
+
         return $this->render('Story/edit.html.twig', [
             'form' => $form->createView(),
             'is_new' => $isNew,
+            'tags' => $tags,
+            'selected_tag_ids' => $selectedTagIds,
             'active_section' => 'stories',
         ]);
     }

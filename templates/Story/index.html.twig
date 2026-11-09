@@ -15,7 +15,9 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Description</th>
+                <th>Epic</th>
+                <th>Tags</th>
+                <th>Created</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,7 +25,13 @@
             {% for story in stories %}
                 <tr>
                     <td>{{ story.name }}</td>
-                    <td>{{ story.description ?? '' }}</td>
+                    <td>{{ story.epic ? story.epic.name : '' }}</td>
+                    <td>
+                        {% for storyTag in story.storyTags %}
+                            <span class="badge">{{ storyTag.tag.name }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>{{ story.createdAt ? story.createdAt|date('Y-m-d H:i') : '' }}</td>
                     <td>
                         <a href="{{ path('story_edit', {id: story.id}) }}">Edit</a>
                         <form method="post" action="{{ path('story_delete', {id: story.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
@@ -34,7 +42,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3">No stories found.</td>
+                    <td colspan="5">No stories found.</td>
                 </tr>
             {% endfor %}
         </tbody>

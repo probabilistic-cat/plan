@@ -147,3 +147,93 @@ body {
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+
+/* Badge/Chip styles */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 1px 2px;
+    border-radius: 12px;
+    font-size: 12px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+}
+
+.badge:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+/* Autocomplete dropdown */
+.autocomplete-wrapper {
+    position: relative;
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    min-width: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.autocomplete-dropdown .option {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.autocomplete-dropdown .option:hover,
+.autocomplete-dropdown .option.selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Tag chips for multi-select */
+.tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 4px;
+    min-height: 38px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 13px;
+}
+
+.tag-chip .remove {
+    margin-left: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tag-chip .remove:hover {
+    color: #ffcccc;
+}
+
+.tag-chips-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 4px;
+    font-size: 14px;
+}
