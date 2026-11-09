@@ -6,12 +6,13 @@ namespace App\Entity;
 
 use App\Entity\Common\IdField;
 use App\Entity\Common\TimestampFields;
+use App\Repository\EpicRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: EpicRepository::class)]
 #[ORM\Table(name: 'epic')]
 #[ORM\Index(name: 'ix__epic__creator_id', columns: ['creator_id'])]
 #[ORM\HasLifecycleCallbacks]

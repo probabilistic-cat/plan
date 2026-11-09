@@ -17,7 +17,7 @@ final class EpicTag
     public Epic $epic;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Tag::class)]
+    #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'epicTags')]
     #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
     public Tag $tag;
 }

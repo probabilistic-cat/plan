@@ -1,0 +1,49 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ tag.name }}{% endblock %}
+
+{% block content %}
+    <h1>Tag: {{ tag.name }}</h1>
+
+    <p>
+        <a href="{{ path('tag_index') }}">Back to list</a> |
+        <a href="{{ path('tag_edit', {id: tag.id}) }}">Edit</a>
+    </p>
+
+    {% if epics|length > 0 %}
+        <h2>Epics ({{ epics|length }})</h2>
+        <ul class="epics">
+            {% for epic in epics %}
+                <li>
+                    <a href="{{ path('epic_edit', {id: epic.id}) }}">{{ epic.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if stories|length > 0 %}
+        <h2>Stories ({{ stories|length }})</h2>
+        <ul class="stories">
+            {% for story in stories %}
+                <li>
+                    <a href="{{ path('story_edit', {id: story.id}) }}">{{ story.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if tasks|length > 0 %}
+        <h2>Tasks ({{ tasks|length }})</h2>
+        <ul class="tasks">
+            {% for task in tasks %}
+                <li>
+                    <a href="{{ path('task_edit', {id: task.id}) }}">{{ task.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if tasks|length == 0 and stories|length == 0 and epics|length == 0 %}
+        <p>This tag is not assigned to any tasks, stories, or epics.</p>
+    {% endif %}
+{% endblock %}

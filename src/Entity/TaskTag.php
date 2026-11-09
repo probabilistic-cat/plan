@@ -17,7 +17,7 @@ final class TaskTag
     public Task $task;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Tag::class)]
+    #[ORM\ManyToOne(targetEntity: Tag::class, inversedBy: 'taskTags')]
     #[ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
     public Tag $tag;
 }

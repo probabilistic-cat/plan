@@ -6,12 +6,13 @@ namespace App\Entity;
 
 use App\Entity\Common\IdField;
 use App\Entity\Common\TimestampFields;
+use App\Repository\StoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: StoryRepository::class)]
 #[ORM\Table(name: 'story')]
 #[ORM\Index(name: 'ix__story__creator_id', columns: ['creator_id'])]
 #[ORM\Index(name: 'ix__story__epic_id', columns: ['epic_id'])]

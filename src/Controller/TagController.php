@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Epic;
+use App\Entity\EpicTag;
+use App\Entity\Story;
+use App\Entity\StoryTag;
 use App\Entity\Tag;
+use App\Entity\Task;
+use App\Entity\TaskTag;
 use App\Form\Type\TagType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,24 +26,47 @@ final class TagController extends AbstractController
     public const string ROUTE_NEW = 'tag_new';
     public const string ROUTE_EDIT = 'tag_edit';
     public const string ROUTE_DELETE = 'tag_delete';
+    public const string ROUTE_SHOW = 'tag_show';
 
     #[Route(name: self::ROUTE_INDEX, methods: ['GET'])]
-    public function search(Request $request, EntityManagerInterface $em): Response {
-        $query = $request->query->get('q', '');
-
+    public function index(EntityManagerInterface $em): Response {
+        /** @var Tag[] $tags */
         $tags = $em->getRepository(Tag::class)
-            ->createQueryBuilder('t')
-            ->where('t.name LIKE :q')
-            ->setParameter('q', '%' . $query . '%')
+            ->createQueryBuilder('t', 't.id')
             ->orderBy('t.name', \SortDirection::Ascending)
-            ->setMaxResults(50)
             ->getQuery()
             ->getResult()
         ;
 
+        /** @var array<EpicTag> $epicTags */
+        $epicTags = $em->getRepository(EpicTag::class)->findAll();
+        foreach ($epicTags as $epicTag) {
+            $tagId = (string)$epicTag->tag->id;
+            if (array_key_exists($tagId, $tags)) {
+                $tags[$tagId]->epicCount++;
+            }
+        }
+
+        /** @var array<StoryTag> $storyTags */
+        $storyTags = $em->getRepository(StoryTag::class)->findAll();
+        foreach ($storyTags as $storyTag) {
+            $tagId = (string)$storyTag->tag->id;
+            if (array_key_exists($tagId, $tags)) {
+                $tags[$tagId]->storyCount++;
+            }
+        }
+
+        /** @var array<TaskTag> $taskTags */
+        $taskTags = $em->getRepository(TaskTag::class)->findAll();
+        foreach ($taskTags as $taskTag) {
+            $tagId = (string)$taskTag->tag->id;
+            if (array_key_exists($tagId, $tags)) {
+                $tags[$tagId]->taskCount++;
+            }
+        }
+
         return $this->render('Tag/index.html.twig', [
             'tags' => $tags,
-            'query' => $query,
             'active_section' => 'tags',
         ]);
     }
@@ -46,6 +75,21 @@ final class TagController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em): Response {
         $tag = new Tag();
         return $this->editAction($request, $em, $tag);
+    }
+
+    #[Route('/{id}', name: self::ROUTE_SHOW, methods: ['GET'])]
+    public function show(EntityManagerInterface $em, Tag $tag): Response {
+        $epics = $em->getRepository(Epic::class)->findWithTag($tag);
+        $stories = $em->getRepository(Story::class)->findWithTag($tag);
+        $tasks = $em->getRepository(Task::class)->findWithTag($tag);
+
+        return $this->render('Tag/show.html.twig', [
+            'tag' => $tag,
+            'epics' => $epics,
+            'stories' => $stories,
+            'tasks' => $tasks,
+            'active_section' => 'tags',
+        ]);
     }
 
     #[Route('/{id}/edit', name: self::ROUTE_EDIT, methods: ['GET', 'POST'])]

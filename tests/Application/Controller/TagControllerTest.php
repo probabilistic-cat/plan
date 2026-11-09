@@ -6,7 +6,13 @@ namespace App\Tests\Application\Controller;
 
 use App\Controller\TagController;
 use App\Entity\Tag;
+use App\Tests\Factory\EpicFactory;
+use App\Tests\Factory\EpicTagFactory;
+use App\Tests\Factory\StoryFactory;
+use App\Tests\Factory\StoryTagFactory;
 use App\Tests\Factory\TagFactory;
+use App\Tests\Factory\TaskFactory;
+use App\Tests\Factory\TaskTagFactory;
 use App\Tests\Factory\UserFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,20 +27,34 @@ final class TagControllerTest extends CRUDControllerCase
         $this->indexWithItems(TagController::ROUTE_INDEX);
     }
 
-    public function testIndexWithQueryFilter(): void {
-        TagFactory::createOne(['name' => 'bug']);
-        TagFactory::createOne(['name' => 'feature']);
+    public function testIndexWithCounts(): void {
+        $tagName = 'test-tag';
+        $tag = TagFactory::createOne(['name' => $tagName]);
+        $epic = EpicFactory::createOne();
+        $story = StoryFactory::createOne();
+        $task1 = TaskFactory::createOne();
+        $task2 = TaskFactory::createOne();
 
-        $this->client->request(
-            Request::METHOD_GET, $this->router->generate(TagController::ROUTE_INDEX),
-            ['q' => 'bug'],
-        );
+        TaskTagFactory::createOne(['task' => $task1, 'tag' => $tag]);
+        TaskTagFactory::createOne(['task' => $task2, 'tag' => $tag]);
+        StoryTagFactory::createOne(['story' => $story, 'tag' => $tag]);
+        EpicTagFactory::createOne(['epic' => $epic, 'tag' => $tag]);
+
+        $this->client->request(Request::METHOD_GET, $this->router->generate(TagController::ROUTE_INDEX));
         self::assertResponseIsSuccessful();
 
         $body = $this->client->getResponse()->getContent();
         $this->assertIsString($body);
-        $this->assertStringContainsString('bug', $body);
-        $this->assertStringNotContainsString('feature', $body);
+
+        $this->assertStringContainsString($tagName, $body);
+
+        $this->assertStringContainsString('<th>Epics</th>', $body);
+        $this->assertStringContainsString('<th>Stories</th>', $body);
+        $this->assertStringContainsString('<th>Tasks</th>', $body);
+
+        $this->assertStringContainsString('<td class="epicsCount">1</td>', $body);
+        $this->assertStringContainsString('<td class="storiesCount">1</td>', $body);
+        $this->assertStringContainsString('<td class="tasksCount">2</td>', $body);
     }
 
     public function testNewCreateTag(): void {
@@ -72,6 +92,37 @@ final class TagControllerTest extends CRUDControllerCase
 
     public function testDeleteTag(): void {
         $this->delete(TagController::ROUTE_INDEX, '/tag', 'delete-tag-');
+    }
+
+    public function testShowTag(): void {
+        $tagName = 'test-tag';
+        $tag = TagFactory::createOne(['name' => $tagName]);
+        $epic = EpicFactory::createOne();
+        $story = StoryFactory::createOne();
+        $task1 = TaskFactory::createOne();
+        $task2 = TaskFactory::createOne();
+
+        TaskTagFactory::createOne(['task' => $task1, 'tag' => $tag]);
+        TaskTagFactory::createOne(['task' => $task2, 'tag' => $tag]);
+        StoryTagFactory::createOne(['story' => $story, 'tag' => $tag]);
+        EpicTagFactory::createOne(['epic' => $epic, 'tag' => $tag]);
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->router->generate(TagController::ROUTE_SHOW, ['id' => $tag->id]),
+        );
+        self::assertResponseIsSuccessful();
+
+        $body = $this->client->getResponse()->getContent();
+        $this->assertIsString($body);
+
+        $this->assertStringContainsString('Tag: ' . $tagName, $body);
+        $this->assertStringContainsString('<h2>Epics (1)</h2>', $body);
+        self::assertSelectorCount(1, 'ul.epics > li');
+        $this->assertStringContainsString('<h2>Stories (1)</h2>', $body);
+        self::assertSelectorCount(1, 'ul.stories > li');
+        $this->assertStringContainsString('<h2>Tasks (2)</h2>', $body);
+        self::assertSelectorCount(2, 'ul.tasks > li');
     }
 
     protected function createOne(array $attrs = []): Tag {
