@@ -81,4 +81,12 @@ final class Task
     public function removeTaskTag(TaskTag $taskTag): void {
         $this->taskTags->removeElement($taskTag);
     }
+
+    /** @param Collection<int, TimeLog> $timeLogs */
+    public function getTotalLoggedMinutes(Collection $timeLogs): int {
+        return $timeLogs->reduce(
+            static fn (int $carry, TimeLog $timeLog): int => $carry + $timeLog->minutes,
+            0,
+        );
+    }
 }

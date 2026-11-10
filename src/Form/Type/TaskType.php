@@ -13,6 +13,7 @@ use App\Form\Type\Common\EntityTag;
 use App\Form\Type\Common\FormConsts;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -56,7 +57,14 @@ final class TaskType extends AbstractType
                 'required' => true,
                 'attr' => ['class' => 'w-100'],
             ])
-            ->add('priority', IntegerType::class, [
+            ->add('priority', ChoiceType::class, [
+                'choices' => [
+                    'Lowest' => Task::PRIORITY_LOWEST,
+                    'Low' => Task::PRIORITY_LOW,
+                    'Medium' => Task::PRIORITY_MEDIUM,
+                    'High' => Task::PRIORITY_HIGH,
+                    'Critical' => Task::PRIORITY_CRITICAL,
+                ],
                 'required' => true,
             ])
             ->add('estMinutes', IntegerType::class, [

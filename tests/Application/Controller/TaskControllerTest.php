@@ -58,7 +58,7 @@ final class TaskControllerTest extends CRUDControllerCase
         /** @var User $assignee */
         $assignee = UserFactory::createOne();
         /** @var TaskStatus $taskStatus */
-        $taskStatus = TaskStatusFactory::createOne(['code' => TaskStatus::INPROGRESS]);
+        $taskStatus = TaskStatusFactory::findOrCreate(['code' => TaskStatus::INPROGRESS]);
         /** @var Story $story */
         $story = StoryFactory::createOne(['creator' => $user]);
         /** @var Tag $tag */
@@ -83,7 +83,22 @@ final class TaskControllerTest extends CRUDControllerCase
             'task[taskTags]' => [(string)$tag->id],
         ];
 
-        $this->newCreateItem(TaskController::ROUTE_NEW, '/task', $formFieldValues);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(TaskController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'Tasks');
+
+        // Click "Create"
+        $link = $this->client->getCrawler()->filter('a:contains("Create Task")')->first()->link();
+        $this->client->click($link);
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'New Task');
+
+        // Send create form
+        $this->client->submitForm('Create', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(TaskController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $task = $this->findOneBy(['name' => $name]);
         $this->assertNotNull($task);
@@ -143,7 +158,7 @@ final class TaskControllerTest extends CRUDControllerCase
         /** @var User $assignee */
         $assignee = UserFactory::createOne();
         /** @var TaskStatus $taskStatus */
-        $taskStatus = TaskStatusFactory::createOne(['code' => TaskStatus::INPROGRESS]);
+        $taskStatus = TaskStatusFactory::findOrCreate(['code' => TaskStatus::INPROGRESS]);
         $formFieldValues = [
             'task[name]' => $name,
             'task[description]' => $desc,

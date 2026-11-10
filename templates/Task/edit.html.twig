@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% if is_new %}
+{% if task.isNew() %}
     {% set action = 'New' %}
     {% set submit_name = 'Create' %}
 {% else %}
@@ -13,10 +13,168 @@
 {% block content %}
     <h1>{{ action }} Task</h1>
 
+    {% if not task.isNew() %}
+        <div class="time-tracking-summary">
+            <h3>Time Tracking</h3>
+            <p>
+                <strong>Estimated:</strong>
+                {{ task.estMinutes ?? 0 }} min
+                &nbsp;|&nbsp;
+                <strong>Logged:</strong>
+                {{ total_logged_minutes }} min
+            </p>
+            {% set diff = (task.estMinutes ?? 0) - total_logged_minutes %}
+            <p>
+                <strong>Remaining:</strong>
+                {{ diff > 0 ? diff : 0 }} min
+                {% if diff < 0 %}
+                    <span class="over-budget">(over by {{ diff * -1 }} min)</span>
+                {% elseif diff == 0 %}
+                    <span class="on-budget">(on budget)</span>
+                {% else %}
+                    <span class="under-budget">(under budget)</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+
     {{ form_start(form) }}
-        {{ form_widget(form) }}
+        <div class="form-group">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'w-100', 'rows': 4}}) }}
+            {{ form_errors(form.description) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.assignee) }}
+            {{ form_widget(form.assignee, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.assignee) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.story) }}
+            {{ form_widget(form.story, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.story) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.taskStatus) }}
+            {{ form_widget(form.taskStatus, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.taskStatus) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.priority) }}
+            {{ form_widget(form.priority, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.priority) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.estMinutes) }}
+            {{ form_widget(form.estMinutes, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.estMinutes) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.dueDate) }}
+            {{ form_widget(form.dueDate, {'attr': {'class': 'w-100'}}) }}
+            {{ form_errors(form.dueDate) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(form.taskTags) }}
+            <div class="autocomplete-wrapper">
+                <div id="tag-chips" class="tag-chips"></div>
+                <input type="text" id="tag-search" class="tag-chips-input" placeholder="Search and select tags..." />
+                <div id="tag-dropdown" class="autocomplete-dropdown"></div>
+                {{ form_widget(form.taskTags) }}
+            </div>
+            {{ form_errors(form.taskTags) }}
+        </div>
+
         <button type="submit">{{ submit_name }}</button>
     {{ form_end(form) }}
 
     <p><a href="{{ path('task_index') }}">Back to list</a></p>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script>
+    $(() => {
+        // Tags autocomplete
+        const tagDropdown = $('#tag-dropdown');
+        const tagSearch = $('#tag-search');
+        const tagChips = $('#tag-chips');
+        const tagSelect = $('#{{ form.taskTags.vars.id }}');
+        let allTags = {{ tags|default('[]')|raw }};
+        let selectedTags = {{ selected_tag_ids|default('[]')|raw }};
+
+        // Render existing tags as chips
+        renderTagChips();
+
+        tagSearch.on('input', function() {
+            const query = $(this).val().toLowerCase();
+            const filtered = allTags.filter(function(tag) {
+                return tag.name.toLowerCase().includes(query) && !selectedTags.includes(tag.id);
+            });
+            renderDropdown(tagDropdown, filtered, function(tag) {
+                selectedTags.push(tag.id);
+                renderTagChips();
+                tagSearch.val('');
+                updateTagSelect();
+            });
+        });
+
+        function renderTagChips() {
+            tagChips.empty();
+            const selectedTagObjects = allTags.filter(function(t) {
+                return selectedTags.includes(t.id);
+            });
+            selectedTagObjects.forEach(function(tag) {
+                const chip = $('<span class="tag-chip"></span>');
+                chip.text(tag.name);
+                const removeBtn = $('<span class="remove">&times;</span>');
+                removeBtn.on('click', function() {
+                    selectedTags = selectedTags.filter(function(id) { return id !== tag.id; });
+                    renderTagChips();
+                    updateTagSelect();
+                });
+                chip.append(removeBtn);
+                tagChips.append(chip);
+            });
+        }
+
+        function updateTagSelect() {
+            tagSelect.val(selectedTags);
+        }
+
+        function renderDropdown($dropdown, items, onSelect) {
+            $dropdown.empty();
+            if (items.length === 0) {
+                $dropdown.hide();
+                return;
+            }
+            items.forEach(function(item, index) {
+                const $option = $('<div class="option"></div>').text(item.name);
+                $option.on('click', function() { onSelect(item); });
+                $dropdown.append($option);
+            });
+            $dropdown.show();
+        }
+
+        // Close dropdowns on outside click
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.autocomplete-wrapper').length) {
+                tagDropdown.hide();
+            }
+        });
+    });
+    </script>
 {% endblock %}
