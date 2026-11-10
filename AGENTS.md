@@ -80,6 +80,9 @@
 - Do not assume a page is correct merely because the code looks correct or the build succeeds.
 - Avoid unrelated browser interactions or changes to application data. Do not expose credentials, session tokens, or other sensitive information in logs or reports.
 - If browser access or a required DevTools tool is unavailable, continue with source-level analysis and clearly state what could not be verified.
+- Use jQuery for Javascript code. 
+- Don't use deprecated constructions.
+- Arguments passed to twig and variables in twig templates must be named in snake_case.
 
 ## Agent skills
 ### Issue tracker
