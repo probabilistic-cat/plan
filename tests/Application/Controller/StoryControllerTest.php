@@ -44,7 +44,23 @@ final class StoryControllerTest extends CRUDControllerCase
             'story[storyTags]' => [(string)$tag->id],
         ];
 
-        $this->newCreateItem(StoryController::ROUTE_NEW, '/story', $formFieldValues);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(StoryController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Stories');
+        self::assertSelectorTextContains('h1', 'Stories');
+
+        // Click "Create"
+        $this->client->clickLink('Create Story');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Story');
+        self::assertSelectorTextContains('h1', 'New Story');
+
+        // Submit form
+        $this->client->submitForm('Create', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(StoryController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $story = $this->findOneBy(['name' => $name]);
         $this->assertNotNull($story);
@@ -92,7 +108,21 @@ final class StoryControllerTest extends CRUDControllerCase
             'story[storyTags]' => [(string)$tag2->id, (string)$tag3->id],
         ];
 
-        $this->editUpdateItem(StoryController::ROUTE_EDIT, '/story', $formFieldValues, $story->id);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(StoryController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+
+        // Click "Edit"
+        $this->client->clickLink('Edit');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Edit Story');
+        self::assertSelectorTextContains('h1', 'Edit Story');
+
+        // Submit form
+        $this->client->submitForm('Update', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(StoryController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $updStory = $this->findOneBy(['id' => $story->id]);
         $this->assertNotNull($updStory);
@@ -105,45 +135,6 @@ final class StoryControllerTest extends CRUDControllerCase
 
     public function testDeleteStory(): void {
         $this->delete(StoryController::ROUTE_INDEX, '/story', 'delete-story-');
-    }
-
-    public function testAcceptanceCreateStoryWithEpic(): void {
-        $user = UserFactory::createOne();
-        $this->client->loginUser($user);
-
-        /** @var Epic $epic */
-        $epic = EpicFactory::createOne(['creator' => $user]);
-
-        // Navigate to /story and verify list renders
-        $this->client->request(Request::METHOD_GET, $this->router->generate(StoryController::ROUTE_INDEX));
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Stories');
-        self::assertPageTitleSame('Stories');
-
-        // Click create
-        $this->client->clickLink('Create Story');
-        self::assertResponseIsSuccessful();
-        self::assertPageTitleSame('New Story');
-        self::assertSelectorTextContains('h1', 'New Story');
-
-        // Fill form and submit
-        $crawler = $this->client->getCrawler();
-        $name = 'Acceptance Test Story';
-        $form = $crawler->selectButton('Create')->form([
-            'story[name]' => $name,
-            'story[description]' => 'Created by acceptance test',
-            'story[epic]' => $epic->id,
-        ]);
-
-        $this->client->submit($form);
-        self::assertResponseRedirects('/story');
-
-        // Verify Story created with Epic link
-        $this->client->followRedirect();
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('table', $name);
-        self::assertSelectorTextContains('table', $epic->name);
-        self::assertPageTitleSame('Stories');
     }
 
     protected function createOne(array $attrs = []): Story {

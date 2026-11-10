@@ -12,7 +12,6 @@ use App\Form\Type\Common\FormConsts;
 use App\Tests\Application\ApplicationTestCase;
 use App\Tests\Factory\UserFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Uid\Uuid;
 
 abstract class CRUDControllerCase extends ApplicationTestCase
 {
@@ -42,15 +41,6 @@ abstract class CRUDControllerCase extends ApplicationTestCase
         $this->assertStringContainsString($name2, $body);
     }
 
-    /** @param array<string, int|string|Uuid|array<string>> $formFieldValues */
-    protected function newCreateItem(string $routeNew, string $indexPath, array $formFieldValues): void {
-        $this->client->request(Request::METHOD_GET, $this->router->generate($routeNew));
-        self::assertResponseIsSuccessful();
-
-        $this->client->submitForm('Create', $formFieldValues);
-        self::assertResponseRedirects($indexPath);
-    }
-
     protected function newInvalidData(string $routeNew, string $formName): void {
         $user = UserFactory::createOne();
         $this->client->loginUser($user);
@@ -62,15 +52,6 @@ abstract class CRUDControllerCase extends ApplicationTestCase
         self::assertResponseIsSuccessful();
         self::assertSelectorExists('form ul li');
         self::assertSelectorTextContains('form ul li', FormConsts::NAME_REQUIRED_MESSAGE);
-    }
-
-    /** @param array<string, int|string|Uuid|array<string>> $formFieldValues */
-    protected function editUpdateItem(string $routeEdit, string $indexPath, array $formFieldValues, Uuid $itemId): void {
-        $this->client->request(Request::METHOD_GET, $this->router->generate($routeEdit, ['id' => $itemId]));
-        self::assertResponseIsSuccessful();
-
-        $this->client->submitForm('Update', $formFieldValues);
-        self::assertResponseRedirects($indexPath);
     }
 
     protected function delete(string $routeIndex, string $indexPath, string $formIdPrefix): void {

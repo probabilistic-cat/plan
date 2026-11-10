@@ -66,7 +66,23 @@ final class TagControllerTest extends CRUDControllerCase
             'tag[name]' => $name,
         ];
 
-        $this->newCreateItem(TagController::ROUTE_NEW, '/tag', $formFieldValues);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(TagController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Tags');
+        self::assertSelectorTextContains('h1', 'Tags');
+
+        // Click "Create"
+        $this->client->clickLink('Create Tag');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Tag');
+        self::assertSelectorTextContains('h1', 'New Tag');
+
+        // Submit form
+        $this->client->submitForm('Create', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(TagController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $tag = $this->findOneBy(['name' => $name]);
         $this->assertNotNull($tag);
@@ -83,7 +99,21 @@ final class TagControllerTest extends CRUDControllerCase
         $name = 'New name';
         $formFieldValues = ['tag[name]' => $name];
 
-        $this->editUpdateItem(TagController::ROUTE_EDIT, '/tag', $formFieldValues, $tag->id);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(TagController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+
+        // Click "Edit"
+        $this->client->clickLink('Edit');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Edit Tag');
+        self::assertSelectorTextContains('h1', 'Edit Tag');
+
+        // Submit form
+        $this->client->submitForm('Update', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(TagController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $updTag = $this->findOneBy(['id' => $tag->id]);
         $this->assertNotNull($updTag);

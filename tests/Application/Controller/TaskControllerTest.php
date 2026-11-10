@@ -86,15 +86,16 @@ final class TaskControllerTest extends CRUDControllerCase
         // Go to index page
         $this->client->request(Request::METHOD_GET, $this->router->generate(TaskController::ROUTE_INDEX));
         self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Tasks');
         self::assertSelectorTextContains('h1', 'Tasks');
 
         // Click "Create"
-        $link = $this->client->getCrawler()->filter('a:contains("Create Task")')->first()->link();
-        $this->client->click($link);
+        $this->client->clickLink('Create Task');
         self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Task');
         self::assertSelectorTextContains('h1', 'New Task');
 
-        // Send create form
+        // Submit form
         $this->client->submitForm('Create', $formFieldValues);
         self::assertResponseRedirects($this->router->generate(TaskController::ROUTE_INDEX));
         $this->client->followRedirect();
@@ -171,7 +172,21 @@ final class TaskControllerTest extends CRUDControllerCase
             'task[taskTags]' => [(string)$tag2->id, (string)$tag3->id],
         ];
 
-        $this->editUpdateItem(TaskController::ROUTE_EDIT, '/task', $formFieldValues, $task->id);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(TaskController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+
+        // Click "Edit"
+        $this->client->clickLink('Edit');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Edit Task');
+        self::assertSelectorTextContains('h1', 'Edit Task');
+
+        // Submit form
+        $this->client->submitForm('Update', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(TaskController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $updTask = $this->findOneBy(['id' => $task->id]);
         $this->assertNotNull($updTask);

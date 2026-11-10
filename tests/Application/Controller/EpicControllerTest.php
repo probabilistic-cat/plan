@@ -13,6 +13,7 @@ use App\Tests\Factory\EpicTagFactory;
 use App\Tests\Factory\TagFactory;
 use App\Tests\Factory\UserFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 final class EpicControllerTest extends CRUDControllerCase
 {
@@ -38,7 +39,23 @@ final class EpicControllerTest extends CRUDControllerCase
             'epic[epicTags]' => [(string)$tag->id],
         ];
 
-        $this->newCreateItem(EpicController::ROUTE_NEW, '/epic', $formFieldValues);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(EpicController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Epics');
+        self::assertSelectorTextContains('h1', 'Epics');
+
+        // Click "Create"
+        $this->client->clickLink('Create Epic');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('New Epic');
+        self::assertSelectorTextContains('h1', 'New Epic');
+
+        // Submit form
+        $this->client->submitForm('Create', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(EpicController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $epic = $this->findOneBy(['name' => $name]);
         $this->assertNotNull($epic);
@@ -81,7 +98,21 @@ final class EpicControllerTest extends CRUDControllerCase
             'epic[epicTags]' => [(string)$tag2->id, (string)$tag3->id],
         ];
 
-        $this->editUpdateItem(EpicController::ROUTE_EDIT, '/epic', $formFieldValues, $epic->id);
+        // Go to index page
+        $this->client->request(Request::METHOD_GET, $this->router->generate(EpicController::ROUTE_INDEX));
+        self::assertResponseIsSuccessful();
+
+        // Click "Edit"
+        $this->client->clickLink('Edit');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleSame('Edit Epic');
+        self::assertSelectorTextContains('h1', 'Edit Epic');
+
+        // Submit form
+        $this->client->submitForm('Update', $formFieldValues);
+        self::assertResponseRedirects($this->router->generate(EpicController::ROUTE_INDEX));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
 
         $updEpic = $this->findOneBy(['id' => $epic->id]);
         $this->assertNotNull($updEpic);
@@ -93,39 +124,6 @@ final class EpicControllerTest extends CRUDControllerCase
 
     public function testDeleteEpic(): void {
         $this->delete(EpicController::ROUTE_INDEX, '/epic', 'delete-epic-');
-    }
-
-    public function testAcceptanceCreateEpic(): void {
-        $user = UserFactory::createOne();
-        $this->client->loginUser($user);
-
-        // Navigate to /epic and verify list renders
-        $this->client->request('GET', '/epic');
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('h1', 'Epics');
-        self::assertPageTitleSame('Epics');
-
-        // Click create
-        $this->client->clickLink('Create Epic');
-        self::assertResponseIsSuccessful();
-        self::assertPageTitleSame('New Epic');
-        self::assertSelectorTextContains('h1', 'New Epic');
-
-        // Fill form and submit
-        $crawler = $this->client->getCrawler();
-        $form = $crawler->selectButton('Create')->form([
-            'epic[name]' => 'Acceptance Test Epic',
-            'epic[description]' => 'Created by acceptance test',
-        ]);
-
-        $this->client->submit($form);
-        self::assertResponseRedirects('/epic');
-
-        // Verify Epic created
-        $this->client->followRedirect();
-        self::assertResponseIsSuccessful();
-        self::assertSelectorTextContains('table', 'Acceptance Test Epic');
-        self::assertPageTitleSame('Epics');
     }
 
     protected function createOne(array $attrs = []): Epic {
