@@ -1,5 +1,10 @@
 {% extends 'layout.html.twig' %}
 
+{% block js %}
+    {{ parent() }}
+    <script src="{{ asset('js/transformData.js') }}"></script>
+{% endblock %}
+
 {% block title %}Stories{% endblock %}
 
 {% block content %}
@@ -18,6 +23,7 @@
                 <th>Epic</th>
                 <th>Tags</th>
                 <th>Created</th>
+                <th>Logged time</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -32,6 +38,7 @@
                         {% endfor %}
                     </td>
                     <td>{{ story.createdAt ? story.createdAt|date('Y-m-d H:i') : '' }}</td>
+                    <td><span class="time-minutes">{{ story.getTotalLoggedMinutes() }}</span></td>
                     <td>
                         <a href="{{ path('story_edit', {id: story.id}) }}">Edit</a>
                         <form method="post" action="{{ path('story_delete', {id: story.id}) }}" style="display:inline" onsubmit="return confirm('Are you sure?');">
@@ -42,7 +49,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="5">No stories found.</td>
+                    <td colspan="6">No stories found.</td>
                 </tr>
             {% endfor %}
         </tbody>

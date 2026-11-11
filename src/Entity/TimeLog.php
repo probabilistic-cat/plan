@@ -23,7 +23,7 @@ final class TimeLog
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     public User $user;
 
-    #[ORM\ManyToOne(targetEntity: Task::class)]
+    #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: 'timeLogs')]
     #[ORM\JoinColumn(name: 'task_id', referencedColumnName: 'id', nullable: false)]
     public Task $task;
 

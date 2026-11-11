@@ -59,4 +59,13 @@ final class Story
     public function removeStoryTag(StoryTag $storyTag): void {
         $this->storyTags->removeElement($storyTag);
     }
+
+    public function getTotalLoggedMinutes(): int {
+        $total = 0;
+        foreach ($this->tasks as $task) {
+            $total += $task->getTotalLoggedMinutes();
+        }
+
+        return $total;
+    }
 }

@@ -63,11 +63,16 @@ final class Task
     #[ORM\JoinColumn(name: 'story_id', referencedColumnName: 'id', nullable: true)]
     public ?Story $story = null;
 
+    /** @var Collection<int, TimeLog> */
+    #[ORM\OneToMany(targetEntity: TimeLog::class, mappedBy: 'task', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private(set) Collection $timeLogs;
+
     /** @var Collection<int, TaskTag> */
     #[ORM\OneToMany(targetEntity: TaskTag::class, mappedBy: 'task', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private(set) Collection $taskTags;
 
     public function __construct() {
+        $this->timeLogs = new ArrayCollection();
         $this->taskTags = new ArrayCollection();
     }
 
@@ -82,11 +87,12 @@ final class Task
         $this->taskTags->removeElement($taskTag);
     }
 
-    /** @param Collection<int, TimeLog> $timeLogs */
-    public function getTotalLoggedMinutes(Collection $timeLogs): int {
-        return $timeLogs->reduce(
-            static fn (int $carry, TimeLog $timeLog): int => $carry + $timeLog->minutes,
-            0,
-        );
+    public function getTotalLoggedMinutes(): int {
+        $total = 0;
+        foreach ($this->timeLogs as $timeLog) {
+            $total += $timeLog->minutes;
+        }
+
+        return $total;
     }
 }

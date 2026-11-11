@@ -54,4 +54,15 @@ final class Epic
     public function removeEpicTag(EpicTag $epicTag): void {
         $this->epicTags->removeElement($epicTag);
     }
+
+    public function getTotalLoggedMinutes(): int {
+        $total = 0;
+        foreach ($this->stories as $story) {
+            foreach ($story->tasks as $task) {
+                $total += $task->getTotalLoggedMinutes();
+            }
+        }
+
+        return $total;
+    }
 }

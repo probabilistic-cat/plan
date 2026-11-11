@@ -11,8 +11,6 @@ use App\Entity\TaskTag;
 use App\Entity\TimeLog;
 use App\Entity\User;
 use App\Form\Type\TaskType;
-use App\Form\Type\TimeLogType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -93,33 +91,36 @@ final class TaskController extends AbstractController
         return $this->redirectToRoute(self::ROUTE_INDEX);
     }
 
-    #[Route('/{id}/timelog', name: self::ROUTE_CREATE_TIME_LOG, methods: ['GET', 'POST'])]
-    public function createTimeLog(Request $request, EntityManagerInterface $em, Task $task): Response {
-        $timeLog = new TimeLog();
-        $timeLog->task = $task;
-
-        $form = $this->createForm(TimeLogType::class, $timeLog);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if (!$user instanceof User) {
-                throw new \LogicException('User required');
-            }
-            $timeLog->user = $user;
-            $em->persist($timeLog);
-            $em->flush();
-
-            $this->addFlash('success', 'Time logged successfully.');
-
-            return $this->redirectToRoute(self::ROUTE_INDEX);
+    #[Route('/{id}/timelog', name: self::ROUTE_CREATE_TIME_LOG, methods: ['POST'])]
+    public function createTimeLog(Request $request, EntityManagerInterface $em, Task $task): RedirectResponse {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw new \LogicException('User required');
         }
 
-        return $this->render('Task/timelog.html.twig', [
-            'form' => $form->createView(),
-            'task' => $task,
-            'active_section' => 'tasks',
-        ]);
+        /** @var string|null $token */
+        $token = $request->request->get('_token');
+        if ($token === null || !$this->isCsrfTokenValid('timelog_' . $task->id, $token)) {
+            $this->addFlash('error', 'Invalid request. Please try again.');
+            return $this->redirectToRoute(self::ROUTE_EDIT, ['id' => $task->id]);
+        }
+
+        $minutes = $request->request->getInt('timelog_minutes');
+        if ($minutes < 1) {
+            $this->addFlash('error', 'Please enter a valid number of minutes.');
+            return $this->redirectToRoute(self::ROUTE_EDIT, ['id' => $task->id]);
+        }
+
+        $timeLog = new TimeLog();
+        $timeLog->task = $task;
+        $timeLog->user = $user;
+        $timeLog->minutes = $minutes;
+        $em->persist($timeLog);
+        $em->flush();
+
+        $this->addFlash('success', 'Time logged successfully.');
+
+        return $this->redirectToRoute(self::ROUTE_EDIT, ['id' => $task->id]);
     }
 
     private function editAction(Request $request, EntityManagerInterface $em, Task $task): Response {
@@ -157,10 +158,10 @@ final class TaskController extends AbstractController
             JSON_THROW_ON_ERROR,
         );
 
+        $timeLogs = $task->timeLogs->toArray();
         $totalLoggedMinutes = 0;
         if (!$isNew) {
-            $timeLogs = $em->getRepository(TimeLog::class)->findBy(['task' => $task]);
-            $totalLoggedMinutes = $task->getTotalLoggedMinutes(new ArrayCollection($timeLogs));
+            $totalLoggedMinutes = $task->getTotalLoggedMinutes();
         }
 
         return $this->render('Task/edit.html.twig', [
@@ -169,6 +170,7 @@ final class TaskController extends AbstractController
             'tags' => $tags,
             'selected_tag_ids' => $selectedTagIds,
             'total_logged_minutes' => $totalLoggedMinutes,
+            'time_logs' => $timeLogs,
             'active_section' => 'tasks',
         ]);
     }

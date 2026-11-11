@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Application\Controller;
 
 use App\Controller\TaskController;
+use App\Entity\Epic;
 use App\Entity\Story;
 use App\Entity\Tag;
 use App\Entity\Task;
 use App\Entity\TaskStatus;
 use App\Entity\TaskTag;
-use App\Entity\TimeLog;
 use App\Entity\User;
+use App\Tests\Factory\EpicFactory;
 use App\Tests\Factory\StoryFactory;
 use App\Tests\Factory\TagFactory;
 use App\Tests\Factory\TaskFactory;
@@ -206,6 +207,78 @@ final class TaskControllerTest extends CRUDControllerCase
         $this->delete(TaskController::ROUTE_INDEX, '/task', 'delete-task-');
     }
 
+    public function testTimeLog(): void {
+        $user = UserFactory::createOne();
+        $logger = UserFactory::createOne();
+        $this->client->loginUser($user);
+
+        /** @var Epic $epic */
+        $epic = EpicFactory::createOne(['creator' => $user]);
+        /** @var Story $story */
+        $story = StoryFactory::createOne(['creator' => $user, 'epic' => $epic]);
+        /** @var Task $task1 */
+        $task1 = TaskFactory::createOne(['creator' => $user, 'story' => $story, 'estMinutes' => 600]);
+        /** @var Task $task2 */
+        $task2 = TaskFactory::createOne(['creator' => $user, 'story' => $story, 'estMinutes' => 300]);
+
+        // Log time on task1
+        $this->client->loginUser($logger);
+
+        // Log time on task 1
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->router->generate(TaskController::ROUTE_EDIT, ['id' => $task1->id]),
+        );
+        self::assertResponseIsSuccessful();
+        $this->client->submitForm('Log Time', ['timelog_minutes' => 130]);
+        self::assertResponseRedirects($this->router->generate(TaskController::ROUTE_EDIT, ['id' => $task1->id]));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        // Log time on task2
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->router->generate(TaskController::ROUTE_EDIT, ['id' => $task2->id]),
+        );
+        self::assertResponseIsSuccessful();
+        $this->client->submitForm('Log Time', ['timelog_minutes' => 60]);
+        self::assertResponseRedirects($this->router->generate(TaskController::ROUTE_EDIT, ['id' => $task2->id]));
+        $this->client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        // Verify time is recorded on task1
+        $em = self::getContainer()->get(EntityManagerInterface::class);
+        $em->clear();
+        $reloadedTask1 = $em->getRepository(Task::class)->find($task1->id);
+        $this->assertNotNull($reloadedTask1);
+        $this->assertEquals(130, $reloadedTask1->getTotalLoggedMinutes());
+
+        // Verify time is recorded on task2
+        $reloadedTask2 = $em->getRepository(Task::class)->find($task2->id);
+        $this->assertNotNull($reloadedTask2);
+        $this->assertEquals(60, $reloadedTask2->getTotalLoggedMinutes());
+
+        // Verify story aggregation
+        $reloadedStory = $em->getRepository(Story::class)->find($story->id);
+        $this->assertNotNull($reloadedStory);
+        $this->assertEquals(190, $reloadedStory->getTotalLoggedMinutes());
+
+        // Verify epic aggregation
+        $reloadedEpic = $em->getRepository(Epic::class)->find($epic->id);
+        $this->assertNotNull($reloadedEpic);
+        $this->assertEquals(190, $reloadedEpic->getTotalLoggedMinutes());
+
+        // Verify task edit page shows total logged minutes
+        $this->client->loginUser($user);
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->router->generate(TaskController::ROUTE_EDIT, ['id' => $task1->id]),
+        );
+        self::assertResponseIsSuccessful();
+        $content = $this->client->getResponse()->getContent();
+        $this->assertIsString($content);
+    }
+
     protected function createOne(array $attrs = []): Task {
         /** @var Task */
         return TaskFactory::createOne($attrs);
@@ -215,31 +288,5 @@ final class TaskControllerTest extends CRUDControllerCase
         $em = self::getContainer()->get(EntityManagerInterface::class);
         $em->clear();
         return $em->getRepository(Task::class)->findOneBy($criteria);
-    }
-
-    public function testCreateTimeLog(): void {
-        $user = UserFactory::createOne();
-        $this->client->loginUser($user);
-
-        $task = TaskFactory::createOne();
-
-        $this->client->request(
-            Request::METHOD_GET,
-            $this->router->generate(TaskController::ROUTE_CREATE_TIME_LOG, ['id' => $task->id]),
-        );
-        self::assertResponseIsSuccessful();
-
-        $minutes = 240;
-        $this->client->submitForm('Add', [
-            'time_log[minutes]' => $minutes,
-        ]);
-        self::assertResponseRedirects('/task');
-
-        $em = self::getContainer()->get(EntityManagerInterface::class);
-        $em->clear();
-        $task = $em->getRepository(Task::class)->find($task->id);
-        $timeLog = $em->getRepository(TimeLog::class)->findOneBy(['task' => $task]);
-        $this->assertNotNull($timeLog);
-        $this->assertEquals($minutes, $timeLog->minutes);
     }
 }

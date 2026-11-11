@@ -18,24 +18,52 @@
             <h3>Time Tracking</h3>
             <p>
                 <strong>Estimated:</strong>
-                {{ task.estMinutes ?? 0 }} min
+                <span class="time-minutes">{{ task.estMinutes ?? 0 }}</span>
                 &nbsp;|&nbsp;
                 <strong>Logged:</strong>
-                {{ total_logged_minutes }} min
+                <span class="time-minutes">{{ total_logged_minutes }}</span>
             </p>
-            {% set diff = (task.estMinutes ?? 0) - total_logged_minutes %}
             <p>
                 <strong>Remaining:</strong>
-                {{ diff > 0 ? diff : 0 }} min
-                {% if diff < 0 %}
-                    <span class="over-budget">(over by {{ diff * -1 }} min)</span>
-                {% elseif diff == 0 %}
-                    <span class="on-budget">(on budget)</span>
-                {% else %}
-                    <span class="under-budget">(under budget)</span>
-                {% endif %}
+                <span class="time-minutes">{{ (task.estMinutes ?? 0) - total_logged_minutes }}</span>
             </p>
         </div>
+
+        {% if app.user %}
+            {% if app.user == task.creator %}
+                {% if time_logs|length > 0 %}
+                    <h3>Time Logs</h3>
+                    <table class="time-logs-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Date</th>
+                                <th>Minutes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in time_logs %}
+                                <tr>
+                                    <td>{{ log.user.name }}</td>
+                                    <td>{{ log.createdAt ? log.createdAt|date('Y-m-d H:i') : '' }}</td>
+                                    <td><span class="time-minutes">{{ log.minutes }}</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+
+            <h3>Log Time</h3>
+            <form method="post" action="{{ path('task_create_time_log', {id: task.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('timelog_' ~ task.id) }}">
+                <div class="form-group">
+                    <label for="timelog_minutes">Minutes</label>
+                    <input type="number" id="timelog_minutes" name="timelog_minutes" min="1" class="w-50" required />
+                </div>
+                <button type="submit">Log Time</button>
+            </form>
+        {% endif %}
     {% endif %}
 
     {{ form_start(form) }}
@@ -106,6 +134,7 @@
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ asset('js/transformData.js') }}"></script>
     <script>
     $(() => {
         // Tags autocomplete
